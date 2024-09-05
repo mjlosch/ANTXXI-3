@@ -1,0 +1,2 @@
+Cruise	Station	Type	mon/day/yr	Lon (?E)	Lat (?N)	Bot. Depth [m]	Bot. Depth [m]	QF	Pressure	QF	Temperature	QF	Salinity	QF	TCO2	QF	alk	QF	NO2	QF	NH4	QF	Si	QF	PO4	QF	NO3	QF
+ANTXXI/3	544f	B	03/06/2004	1.995	-49.5022	250.207	9.875	1	9.961	1	4.0002	1	33.888	1	2131.87	1	2290.6	1	0.23	1	0.69	1	16.2	1	1.71	1	24.3	1

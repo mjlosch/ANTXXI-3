@@ -1,0 +1,91 @@
+/******************************************************************************
+
+  FILE:  llgrid.cnt
+
+         This control file is used with the llgrid program
+         to generate a text file of time ranges that roughly correspond to
+         longitude/latitude grid crossings.  The grid is specified as a
+         starting position and an increment for each dimension.
+
+  INPUT:  CODAS database
+  OUTPUT: text file of time ranges which can be appended to an adcpsect
+          control file to extract profile data for the desired sections
+-------------------------------------------------------------------------------
+  CONTROL FILE STRUCTURE:
+
+  dbname:         < CODAS database name >
+  output:         < output filename >
+  step_size:      < profile sampling rate >               { 1 = every profile }
+  lat_origin:     < decimal degrees >
+  lat_increment:  < decimal degrees >
+  lon_origin:     < decimal degrees >
+  lon_increment:  < decimal degrees >
+  time_ranges:                                    { list of YMDHMS time pairs }
+    < yy/mm/dd hh:mm:ss > to < yy/mm/dd hh:mm:ss >
+    .
+    .
+    .
+  add_time_ranges:                                { list of YMDHMS time pairs }
+  skip_to:        < label >
+-----------------------------------------------------------------------------*/
+
+  dbname:        ../adcpdb/ant21
+  output:        station.llg
+  year_base:     2004
+  step_size:     1
+  lat_origin:    -0.05   /* center bins */
+  lat_increment:  0.1120   /* grid by 1/10 degree latitude */
+  lon_origin:    -0.05
+  lon_increment:  0.073   /* and 1/10 degree longitude */
+   time_ranges:  
+   2004/02/12  03:16:00  to  2004/02/12  05:42:00 /* Station 424 cast 20*/
+   2004/02/13  12:25:00  to  2004/02/13  12:59:00 /* Station 426 cast  1*/
+   2004/02/13  19:05:00  to  2004/02/13  19:34:00 /* Station 427 cast  1*/
+   2004/02/16  04:29:00  to  2004/02/16  04:56:00 /* Station 451 cast  1*/
+   2004/02/17  12:31:00  to  2004/02/17  13:01:00 /* Station 464 cast  1*/
+   2004/02/17  19:07:00  to  2004/02/17  19:37:00 /* Station 466 cast  2*/
+   2004/02/18  04:16:00  to  2004/02/18  04:40:00 /* Station 470 cast  1*/
+   2004/02/22  07:53:00  to  2004/02/22  08:29:00 /* Station 508 cast  2*/
+   2004/02/24  18:47:00  to  2004/02/24  19:11:00 /* Station 511 cast  1*/
+   2004/02/27  18:54:00  to  2004/02/27  19:23:00 /* Station 513 cast  2*/
+   2004/03/01  17:50:00  to  2004/03/01  18:17:00 /* Station 517 cast  1*/
+   2004/03/02  17:29:00  to  2004/03/02  17:54:00 /* Station 522 cast  1*/
+   2004/03/03  00:35:00  to  2004/03/03  01:04:00 /* Station 528 cast  1*/
+   2004/03/03  07:23:00  to  2004/03/03  07:48:00 /* Station 534 cast  1*/
+   2004/03/03  15:40:00  to  2004/03/03  16:09:00 /* Station 540 cast  1*/
+   2004/03/05  16:05:00  to  2004/03/05  16:25:00 /* Station 544 cast  3*/
+   2004/03/06  10:14:00  to  2004/03/06  10:47:00 /* Station 544 cast 18*/
+   2004/03/07  10:34:00  to  2004/03/07  11:11:00 /* Station 544 cast 53*/
+   2004/03/07  20:20:00  to  2004/03/07  22:45:00 /* Station 544 cast 63*/
+   2004/03/08  06:30:00  to  2004/03/08  06:56:00 /* Station 545 cast  1*/
+   2004/03/09  12:42:00  to  2004/03/09  13:12:00 /* Station 546 cast  2*/
+   2004/03/10  01:15:00  to  2004/03/10  03:48:00 /* Station 546 cast 22*/
+   2004/03/11  19:17:00  to  2004/03/11  19:58:00 /* Station 553 cast  3*/
+   2004/03/13  00:21:00  to  2004/03/13  01:04:00 /* Station 562 cast  2*/
+   2004/03/14  02:15:00  to  2004/03/14  04:33:00 /* Station 570 cast  2*/
+   2004/03/14  05:49:00  to  2004/03/14  06:18:00 /* Station 570 cast  4*/
+   2004/03/14  09:23:00  to  2004/03/14  09:39:00 /* Station 570 cast  9*/
+   2004/03/14  10:39:00  to  2004/03/14  11:24:00 /* Station 570 cast 11*/
+   2004/03/14  12:19:00  to  2004/03/14  12:54:00 /* Station 570 cast 14*/
+   2004/03/14  14:33:00  to  2004/03/14  15:22:00 /* Station 570 cast 15*/
+   2004/03/14  16:15:00  to  2004/03/14  16:54:00 /* Station 572 cast  1*/
+   2004/03/14  17:28:00  to  2004/03/14  18:13:00 /* Station 573 cast  1*/
+   2004/03/14  18:44:00  to  2004/03/14  19:27:00 /* Station 574 cast  1*/
+   2004/03/16  02:28:00  to  2004/03/16  03:01:00 /* Station 580 cast  2*/
+   2004/03/16  07:26:00  to  2004/03/16  08:18:00 /* Station 580 cast 10*/
+   2004/03/16  09:49:00  to  2004/03/16  10:24:00 /* Station 580 cast 12*/
+   2004/03/16  12:16:00  to  2004/03/16  12:47:00 /* Station 580 cast 14*/
+   2004/03/16  14:11:00  to  2004/03/16  16:33:00 /* Station 580 cast 18*/
+   2004/03/17  00:07:00  to  2004/03/17  02:32:00 /* Station 583 cast  1*/
+   2004/03/17  03:47:00  to  2004/03/17  06:08:00 /* Station 584 cast  1*/
+   2004/03/17  07:34:00  to  2004/03/17  10:10:00 /* Station 585 cast  1*/
+   2004/03/17  14:10:00  to  2004/03/17  15:16:00 /* Station 586 cast  2*/
+   2004/03/18  21:05:00  to  2004/03/18  23:30:00 /* Station 590 cast  1*/
+   2004/03/19  23:20:00  to  2004/03/19  23:52:00 /* Station 593 cast  3*/
+   2004/03/20  00:52:00  to  2004/03/20  01:42:00 /* Station 593 cast  6*/
+   2004/03/20  03:05:00  to  2004/03/20  03:40:00 /* Station 593 cast  9*/
+   2004/03/20  08:01:00  to  2004/03/20  10:36:00 /* Station 593 cast 14*/
+   2004/03/20  05:29:00  to  2004/03/20  06:11:00 /* Station 593 cast 12*/
+   2004/03/20  12:42:00  to  2004/03/20  15:10:00 /* Station 593 cast 17*/
+   2004/03/20  16:29:00  to  2004/03/20  17:34:00 /* Station 593 cast 18*/
+   

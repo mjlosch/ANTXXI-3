@@ -1,0 +1,20 @@
+layers for which mean stream function (units 1000 m^2/s, NOT
+integrated) is representative:
+layer 1: 19m-50m   ! contaminated by intertial oscillations etc.
+layer 2: 50m-100m
+layer 3: 100m-150m
+layer 4: 150m-200m ! Boris takes this as representative for mean flow
+layer 5: 200m-250m
+
+format of continuous ADCP data eifex_all_uv.mat
+uv = 79 depth layers x (u,v)*number of horiontal points
+units = m/s
+Volker Strass: everything above 100m is heavily contaminated by
+intertial oscillations and other noise, not recommended for assimilation
+
+format of continuous ADCP data eifex_all_xy.mat
+xyt = (lon lat julian_days) x number of horizontal points
+z   = depth between measuments (m)
+zc  = depth at measurments (m)
+
+

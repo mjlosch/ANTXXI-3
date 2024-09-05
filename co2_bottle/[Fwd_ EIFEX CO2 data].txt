@@ -1,0 +1,75 @@
+From: Volker Strass <vhstrass@awi-bremerhaven.de>
+Date: August 9, 2004 1:01:53 PM CEST
+To: Martin Losch <mlosch@awi-bremerhaven.de>
+Subject: [Fwd: EIFEX CO2 data]
+
+Hallo Martin,
+
+die tCO2-Profile sind gerade angekommen. Siehe unten!
+
+Gru§,
+Volker
+
+
+From: Richard <richard.bellerby@bjerknes.uib.no>
+Date: August 9, 2004 12:37:33 PM CEST
+To: 'Volker Strass' <vhstrass@awi-bremerhaven.de>
+Subject: RE: EIFEX CO2 data
+
+
+
+Hi Volker,
+
+Greetings from the Arctic! I am writing this whilst coming to the end of
+yet another cruise this year but this time we are in the ice and it has
+been very pleasant! This emAil will be sent on my return.
+
+Here are all the profiles from the cruise. I guess they are self
+explanatory but you can always come back to me with some questions.
+
+I will be taking a short break after the cruise but am back at work 9th
+August
+
+I hope that I get the chance to be part of the writing of your paper and
+not just get an authorship for providing the CT data! So please feel
+free to send drafts and not just the nearly-end product.
+
+I hope we can also soon arrange my visit to the AWI next spring to work
+on the 16/3, EISENEX and EIFEX papers.
+
+cheers
+
+Richard
+
+
+> -----Original Message-----
+> From: Volker Strass [mailto:vhstrass@awi-bremerhaven.de]
+> Sent: 9. juni 2004 16:25
+> To: Richard Bellerby
+> Subject: EIFEX CO2 data
+>
+>
+> Hi Richard,
+>
+> as I have told you before aboard, I would like to run a 1D
+> ecosystem model for interpretaion of the EIFEX results. While
+> my attempts with running the model during the cruise ended in
+> a complete failure due to lack of time, my chances now are
+> much better, thanks to support from a modeller colleague here.
+>
+> For initialisation and veryfication of the model we need TCO2
+> and Alkalinity data. Would you be willing to supply some of
+> your data from Eddy-2? What I would of course like most to
+> have are vertical profiles from before and just after
+> fertilisation, and later on from in and out of the patch. I
+> would be very gratefull for your help.
+>
+> I hope all is well with you!
+>
+> Kind regards,
+> Volker
+>
+>
+
+
+  
