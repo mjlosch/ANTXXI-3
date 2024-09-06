@@ -1,7 +1,7 @@
 load antxxi3
 load('../timeline.mat')
 %tlid=timeline.station*100+timeline.cast;
-firstday = 31+11; 
+firstday = 31+11;
 lastday  = 31+29+20;
 
 % define grid
@@ -51,18 +51,18 @@ for k = 1:length(data)
     theta_tmp = data{k}.theta(itu);
     it = find(theta_tmp==-999);
     theta_tmp(it) = []; pt(it) = [];
-%    tmp1 = interp1(-pt,theta_tmp,zc,'nearest','extrap');
+    tmp1 = interp1(-pt,theta_tmp,zc,'nearest','extrap');
     tmp2 = interp1(-pt,theta_tmp,zc,'linear');
-%    inan=find(isnan(tmp2));
-%    tmp2(inan) = tmp1(inan);
+    inan=find(isnan(tmp2));
+    tmp2(inan) = tmp1(inan);
     theta(:,k) = tmp2;
     salt_tmp = data{k}.salt(its);
     is=find(salt_tmp==-999);
     salt_tmp(it) = []; ps(it) = [];
-%    tmp1 = interp1(-pt,salt_tmp,zc,'nearest','extrap');
+    tmp1 = interp1(-pt,salt_tmp,zc,'nearest','extrap');
     tmp2 = interp1(-pt,salt_tmp,zc,'linear');
-%    inan=find(isnan(tmp2));
-%    tmp2(inan) = tmp1(inan);
+    inan=find(isnan(tmp2));
+    tmp2(inan) = tmp1(inan);
     salt(:,k) = tmp2;
   end %if
 end %for
@@ -117,7 +117,8 @@ fclose(fid);
 dat2 = reshape(dat1,[42 54 30]);
 figure
 colormap(jet)
-pcolor(lonc, latc,squeeze(dat2(:,:,1))');shading flat
+pcolor(llonc, llatc,squeeze(dat2(:,:,1))');shading flat
+hold on; plot(lon,lat,'+'); hold off
 %caxis([3 7])
 caxis([33.75 33.95])
 colorbar

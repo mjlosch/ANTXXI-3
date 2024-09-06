@@ -12,19 +12,26 @@ function [llonc,llatc,zc,nz] = create_grid(nx,ny)
 % nx = 42;
 % ny = 54;
 
-lonc = [  1.3166,  3.4871]; lonc = (lonc(1):diff(lonc)/(nx-1):lonc(2))';
-latc = [-50.6027,-48.7902]; latc = (latc(1):diff(latc)/(ny-1):latc(2))';
+lonc = [  1.35,  3.48]; lonc = (lonc(1):diff(lonc)/(nx-1):lonc(2))';
+latc = [-50.55,-48.79]; latc = (latc(1):diff(latc)/(ny-1):latc(2))';
 
-% lonb = [1.35, 3.445]; 
+% lonb = [1.35, 3.445];
 % lon_dc = diff(lonb)/(nx-1);
 % lonc = ((lonb(1)+lon_dc):lon_dc:(lonb(end)+lon_dc))';
-% 
-% latb = [-50.55, -48.80]; 
+%
+% latb = [-50.55, -48.80];
 % lat_dc = diff(latb)/(ny-1);
 % latc = ((latb(1)+lat_dc):lat_dc:(latb(end)+lat_dc))';
 
 zc = -[5:10:145 156 170.25 189.25 212.50:25:487.50]';
 nz = length(zc);
+zg = 0
+while zg(end)>zc(end)
+  n = length(zg);
+  dz = 2*(zg(n)-zc(n));
+  zg = [zg zg(n)-dz];
+end
+disp(zg)
+disp(-diff(zg))
 
 [llonc,llatc]=meshgrid(lonc,latc);
-
