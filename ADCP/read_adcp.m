@@ -65,7 +65,7 @@ if ~isempty(iz)
 end
 
 % load common time frame
-load('../timeline.mat')
+load('/Users/yye/ANTXXI-3/output_tmp/timeline.mat')
 firstday = 31+11; 
 lastday  = 31+29+20;
 it = find(t>=firstday & t<=lastday);
@@ -75,14 +75,23 @@ t = t(it);
 ua = ua(:,it);
 va = va(:,it);
 
-nx = 30;
-ny = 60;
-lonc = [min(alon(:)),max(alon(:))]; lonc = [lonc(1):diff(lonc)/(nx-1):lonc(2)]';
-latc = [min(alat(:)),max(alat(:))]; latc = [latc(1):diff(latc)/(ny-1):latc(2)]';
+% nx = 30;
+% ny = 60;
+% lonc = [min(alon(:)),max(alon(:))]; lonc = [lonc(1):diff(lonc)/(nx-1):lonc(2)]';
+% latc = [min(alat(:)),max(alat(:))]; latc = [latc(1):diff(latc)/(ny-1):latc(2)]';
+nx = 42;
+ny = 54;
+lonb = [1.35, 3.445]; 
+lon_dc = diff(lonb)/(nx-1);
+lonc = ((lonb(1)+lon_dc):lon_dc:(lonb(end)+lon_dc))';
+latb = [-50.55, -48.80]; 
+lat_dc = diff(latb)/(ny-1);
+latc = ((latb(1)+lat_dc):lat_dc:(latb(end)+lat_dc))';
 
 long = lonc;
 latg = latc;
-zc = -[5:10:250]';
+%zc = -[5:10:250]';
+zc = -[5:10:145 156 170.25 189.25 212.50:25:487.50]';
 nz = length(zc);
 gmethod = 'linear';
 for k = 1:length(zstrf)
@@ -92,8 +101,8 @@ end
 uini = zeros([length(zc) size(utmp,1) size(utmp,2)]);
 vini = zeros([length(zc) size(utmp,1) size(utmp,2)]);
 gmethod = 'cubic';
-for j = 1:size(utmp,1);
-  for i = 1:size(utmp,2);
+for j = 1:size(utmp,1)
+  for i = 1:size(utmp,2)
     u1 = interp1(zstrf,squeeze(utmp(j,i,:)),zc,'nearest','extrap');
     u2 = interp1(zstrf,squeeze(utmp(j,i,:)),zc,gmethod,NaN);
     i0 = find(isnan(u2));
@@ -103,7 +112,8 @@ for j = 1:size(utmp,1);
     v2 = interp1(zstrf,squeeze(vtmp(j,i,:)),zc,gmethod,NaN);
     i0 = find(isnan(v2));
     v2(i0) = v1(i0);
-    vini(:,j,i) = interp1(zstrf,squeeze(vtmp(j,i,:)),zc,gmethod,'extrap');
+%    vini(:,j,i) = interp1(zstrf,squeeze(vtmp(j,i,:)),zc,gmethod,'extrap');
+    vini(:,j,i) = v2;
   end
 end
 
@@ -112,7 +122,7 @@ uini = permute(uini,[3 2 1]);
 vini = permute(vini,[3 2 1]);
 
 % daily data
-datatime = [firstday:lastday]';
+datatime = (firstday:lastday)';
 % hourly data
 %datatime = [firstday-1:(1/24):lastday]';
 kdiff = 1;
@@ -122,8 +132,8 @@ kdiff = 1;
 nt=length(datatime);
 udata = NaN*ones(nz,ny,nx,nt);
 vdata = NaN*ones(nz,ny,nx,nt);
-for kt = 1:nt;
-  disp(sprintf('timestep %u (%u)',kt,nt))
+for kt = 1:nt
+  fprintf('timestep %u (%u)\n',kt,nt)
   km1 = max(kt-kdiff,1);
   kp1 = min(kt+kdiff,nt);
   it = find(t>=datatime(km1) & t<=datatime(kp1));
@@ -134,11 +144,11 @@ for kt = 1:nt;
     xx = x(it);
     yy = y(it);
     uu = ua(k,it); i0 = find(~isnan(uu));
-    if length(i0) > 2;
+    if length(i0) > 2
       utmp(:,:,k) = griddata(xx(i0),yy(i0),uu(i0),llong,llatc);
     end
     vv = va(k,it); i0 = find(~isnan(vv));
-    if length(i0) > 2;
+    if length(i0) > 2
       vtmp(:,:,k) = griddata(xx(i0),yy(i0),vv(i0),llonc,llatg);
     end
   end
@@ -156,8 +166,25 @@ vdata = permute(vdata,[3 2 1 4]);
 
 prec='real*8';
 ieee='ieee-be';
-fid=fopen('U.init','w',ieee);fwrite(fid,uini,prec);fclose(fid);
-fid=fopen('V.init','w',ieee);fwrite(fid,vini,prec);fclose(fid);
-fid=fopen('U.data.daily','w',ieee);fwrite(fid,udata,prec);fclose(fid);
-fid=fopen('V.data.daily','w',ieee);fwrite(fid,vdata,prec);fclose(fid);
+fid=fopen('../output_tmp/U.init','w',ieee);fwrite(fid,uini,prec);fclose(fid);
+fid=fopen('../output_tmp/V.init','w',ieee);fwrite(fid,vini,prec);fclose(fid);
+fid=fopen('../output_tmp/U.data.daily','w',ieee);fwrite(fid,udata,prec);fclose(fid);
+fid=fopen('../output_tmp/V.data.daily','w',ieee);fwrite(fid,vdata,prec);fclose(fid);
 
+return
+% check binary output
+fid = fopen('/Users/yye/ANTXXI-3/output_tmp/V.init','r');
+dat1 = fread(fid,'real*8',ieee);
+fclose(fid);
+dat2 = reshape(dat1,[42 54 30]);
+figure
+colormap(jet)
+pcolor(lonc, latc,squeeze(dat2(:,:,10))');shading flat
+%caxis([3 7])
+caxis([33.75 33.95])
+colorbar
+set(gca,'PlotBoxAspectRatio',[1,1.5,1],'fontsize',16)
+yticks(-50.6:0.3:-49)
+xticks(1.3:0.3:3.4)
+ylabel('Latitude');
+xlabel('Longitude');
