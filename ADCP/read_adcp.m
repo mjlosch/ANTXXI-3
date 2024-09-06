@@ -112,7 +112,6 @@ for j = 1:size(utmp,1)
     v2 = interp1(zstrf,squeeze(vtmp(j,i,:)),zc,gmethod,NaN);
     i0 = find(isnan(v2));
     v2(i0) = v1(i0);
-%    vini(:,j,i) = interp1(zstrf,squeeze(vtmp(j,i,:)),zc,gmethod,'extrap');
     vini(:,j,i) = v2;
   end
 end
