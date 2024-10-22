@@ -1,4 +1,3 @@
-
 clear
 fname = 'antxxi-3.dat';
 
@@ -14,7 +13,7 @@ while 1
   day(k)   = str2num(tline(2:3));
   month(k) = str2num(tline(5:6));
   year(k)  = str2num(tline(8:9))+2000;
-  hour(k)  = str2num(tline(11:12));
+  hour(k)  = str2num(tline(11:12)); % 3-hourly
   lon(k)   = str2num(tline(20:49));
   lat(k)   = str2num(tline(50:71));
   uwind(k) = str2num(tline(72:93));
@@ -26,7 +25,7 @@ while 1
   if isempty(dp); dampfdruck(k) = NaN; else dampfdruck(k)=dp; end
   press(k) = str2num(tline(182:203));
   dp=str2num(tline(204:220));
-  if isempty(dp); 
+  if isempty(dp) 
     % no observation (night)
     cloudcover(k) = NaN; 
   else 
