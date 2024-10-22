@@ -67,5 +67,5 @@ timeline=struct('station',station,'cast',cast, ...
 		'hours_since_jan01',hours_since_jan01, ...
 		'lon',lon,'lat',lat,'inPatch',inPatch,'inGrid',inGrid);
 
-save timeline timeline
+save output_tmp/timeline timeline
 

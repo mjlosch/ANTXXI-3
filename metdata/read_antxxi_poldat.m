@@ -67,5 +67,5 @@ uwind = -windspeed.*sin(winddir);
 vwind = -windspeed.*cos(winddir);
 
 
-save antxxi_poldat year month day hour minute time lon lat uwind vwind ...
+save ../output_tmp/antxxi_poldat year month day hour minute time lon lat uwind vwind ...
     windspeed winddir atemp press aqh precip swdown qexter

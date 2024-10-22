@@ -1,12 +1,12 @@
 d=dir('*.AWI');
 
 data = cell(size(d));
-for k = 1:length(d);
+for k = 1:length(d)
   fname = d(k).name;
   data{k} = loadctd(fname);
 end
 time = [];
-for k = 1:length(data);
+for k = 1:length(data)
   tmp = data{k}.time;
   time = [time; tmp(1)*1+tmp(2)*100+tmp(3)*10000+(tmp(4)+tmp(5)/60)/24];
 end
@@ -17,13 +17,13 @@ for k = 1:length(i)
 end
 clear datatmp
 
-load('../timeline.mat')
+load('../output_tmp/timeline.mat')
 tlid=timeline.station*100+timeline.cast;
 
-stdpres = [0:4100]';
+stdpres = (0:4100)';
 theta = NaN*ones(length(stdpres),length(data));
 salt  = NaN*ones(length(stdpres),length(data));
-for k = 1:length(data);
+for k = 1:length(data)
   lon(k) = data{k}.lon;
   lat(k) = data{k}.lat;
   ik=find(data{k}.stid==tlid);
@@ -51,4 +51,4 @@ for k = 1:length(data);
   salt(:,k)  = interp1(ps,salt_tmp,stdpres,'linear');
 end
 
-save antxxi3 data 
+save ../output_tmp/antxxi3 data 

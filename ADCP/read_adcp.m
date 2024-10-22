@@ -187,3 +187,27 @@ yticks(-50.6:0.3:-49)
 xticks(1.3:0.3:3.4)
 ylabel('Latitude');
 xlabel('Longitude');
+
+% cut out open boundary conditions 
+% too low spacial resolution at the northmost/eastmost boundary: thus end-1!
+% salinity:
+ubcs=squeeze(uini(:,1,:));
+ubcn=squeeze(uini(:,end-1,:));
+ubcw=squeeze(uini(1,:,:));
+ubce=squeeze(uini(end-1,:,:));
+% temperature:
+vbcs=squeeze(vini(:,1,:));
+vbcn=squeeze(vini(:,end-1,:));
+vbcw=squeeze(vini(1,:,:));
+vbce=squeeze(vini(end-1,:,:));
+
+prec='real*8';
+ieee='ieee-be';
+fid=fopen('../output_tmp/vbcs','w',ieee);fwrite(fid,vbcs,prec);fclose(fid);
+fid=fopen('../output_tmp/vbcn','w',ieee);fwrite(fid,vbcn,prec);fclose(fid);
+fid=fopen('../output_tmp/vbcw','w',ieee);fwrite(fid,vbcw,prec);fclose(fid);
+fid=fopen('../output_tmp/vbce','w',ieee);fwrite(fid,vbce,prec);fclose(fid);
+fid=fopen('../output_tmp/ubcs','w',ieee);fwrite(fid,ubcs,prec);fclose(fid);
+fid=fopen('../output_tmp/ubcn','w',ieee);fwrite(fid,ubcn,prec);fclose(fid);
+fid=fopen('../output_tmp/ubcw','w',ieee);fwrite(fid,ubcw,prec);fclose(fid);
+fid=fopen('../output_tmp/ubce','w',ieee);fwrite(fid,ubce,prec);fclose(fid);

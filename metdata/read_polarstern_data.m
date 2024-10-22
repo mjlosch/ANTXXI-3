@@ -156,7 +156,7 @@ dewpoint = dewpoint;
 wind_speed = wspeed(:);
 wind_direction = wdir(:);
 
-save metdata time lon lat temperature dewpoint wind_speed wind_direction
+save ../output_tmp/metdata time lon lat temperature dewpoint wind_speed wind_direction
 
 
 

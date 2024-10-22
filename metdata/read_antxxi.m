@@ -69,5 +69,5 @@ press=press(:);
 aqh=aqh(:);
 cloudcover=cloudcover(:);
 
-save antxxi time year month day hour  lon lat uwind vwind atemp dewpoint ...
+save ../output_tmp/antxxi time year month day hour  lon lat uwind vwind atemp dewpoint ...
     dampfdruck press aqh cloudcover 

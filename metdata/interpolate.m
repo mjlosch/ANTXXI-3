@@ -11,7 +11,7 @@ myTime = [firstDay:deltaT:lastDay]';
 %
 % coarse resolution 3-hour routine synoptic observations
 %
-load antxxi time lon lat cloudcover atemp
+load ../output_tmp/antxxi time lon lat cloudcover atemp
 
 % parameterization of Koenig+Augstein, 1994, Meterologische Zeitschrift,
 % N.F. 3.Jg. 1994, H.6
@@ -30,7 +30,7 @@ lwdown(find(lwdown<0))=0;
 %
 % high resolution 10-minute Poldat data
 %
-load antxxi_poldat time lon lat vwind uwind atemp press swdown precip aqh
+load ../output_tmp/antxxi_poldat time lon lat vwind uwind atemp press swdown precip aqh
 
 tm = time;
 % interpolate linearily over data gaps

@@ -1,20 +1,24 @@
-load antxxi3
-load('../timeline.mat')
+load('../output_tmp/antxxi3.mat')
+load('../output_tmp/timeline.mat')
 %tlid=timeline.station*100+timeline.cast;
 firstday = 31+11; 
 lastday  = 31+29+20;
 
 % define grid
-nx = 30;
-ny = 60;
-lonc = [  1.3166,  3.4871]; lonc = [lonc(1):diff(lonc)/(nx-1):lonc(2)]';
-latc = [-50.6027,-48.7902]; latc = [latc(1):diff(latc)/(ny-1):latc(2)]';
-zc = -[5:10:250]';
-nz = length(zc);
-[llonc,llatc]=meshgrid(lonc,latc);
+addpath ../
+nx = 42;
+ny = 54;
+[llonc,llatc,zc,nz] = create_grid(nx,ny);
+% nx = 30;
+% ny = 60;
+% lonc = [  1.3166,  3.4871]; lonc = (lonc(1):diff(lonc)/(nx-1):lonc(2))';
+% latc = [-50.6027,-48.7902]; latc = (latc(1):diff(latc)/(ny-1):latc(2))';
+% zc = -(5:10:250)';
+% nz = length(zc);
+% [llonc,llatc]=meshgrid(lonc,latc);
 
 % daily data
-datatime = [firstday:lastday]';
+datatime = (firstday:lastday)';
 nt = length(datatime);
 % hourly data
 %datatime = [firstday-1:(1/24):lastday]';
@@ -26,16 +30,16 @@ salt  = theta;
 lon = NaN*ones(size(data));
 lat = lon;
 tloc = lon;
-for k = 1:length(data);
+for k = 1:length(data)
   if ismember(data{k}.days_since_jan01,datatime)
     lon(k) = data{k}.lon;
     lat(k) = data{k}.lat;
     tmp = data{k}.time;
-    if tmp(2)==1;
+    if tmp(2)==1
       ndays = 0;
-    elseif tmp(2) == 2;
+    elseif tmp(2) == 2
       ndays = 31;
-    elseif tmp(2) == 3;
+    elseif tmp(2) == 3
       ndays = 31+29;
     else
       error('unknown month')
@@ -64,8 +68,8 @@ salt(:,ik) = [];
 nt=length(datatime);
 tdata = NaN*ones(ny,nx,nz,nt);
 sdata = NaN*ones(ny,nx,nz,nt);
-for kt = 1:nt;
-  disp(sprintf('timestep %u (%u)',kt,nt))
+for kt = 1:nt
+  fprintf('timestep %u (%u)\n',kt,nt)
   km1 = max(kt-kdiff,1);
   kp1 = min(kt+kdiff,nt);
   it = find(tloc>=datatime(km1) & tloc<=datatime(kp1));
@@ -76,11 +80,11 @@ for kt = 1:nt;
     xx = lon(it);
     yy = lat(it);
     tt = theta(k,it); i0 = find(~isnan(tt));
-    if length(i0) > 2;
+    if length(i0) > 2
       tdata(:,:,k,kt) = griddata(xx(i0),yy(i0),tt(i0),llonc,llatc);
     end
     ss = salt(k,it); i0 = find(~isnan(ss));
-    if length(i0) > 2;
+    if length(i0) > 2
       sdata(:,:,k,kt) = griddata(xx(i0),yy(i0),ss(i0),llonc,llatc);
     end
   end
@@ -95,5 +99,35 @@ sdata(find(isnan(sdata))) = 0;
 
 prec='real*8';
 ieee='ieee-be';
-%fid=fopen('theta.data.daily','w',ieee);fwrite(fid,tdata,prec);fclose(fid);
-%fid=fopen('salt.data.daily','w',ieee);fwrite(fid,sdata,prec);fclose(fid);
+fid=fopen('../output_tmp/theta.data.daily','w',ieee);fwrite(fid,tdata,prec);fclose(fid);
+fid=fopen('../output_tmp/salt.data.daily','w',ieee);fwrite(fid,sdata,prec);fclose(fid);
+
+return
+% check binary output
+fid = fopen('../output_tmp/salt.data.daily','r');
+ieee='ieee-be';
+dat1 = fread(fid,'real*8',ieee);
+fclose(fid);
+dat2 = reshape(dat1,[42 54 30 39]);
+
+lonb = [1.35, 3.445]; 
+lon_dc = diff(lonb)/(nx-1);
+lonc = ((lonb(1)+lon_dc):lon_dc:(lonb(end)+lon_dc))';
+
+latb = [-50.55, -48.80]; 
+lat_dc = diff(latb)/(ny-1);
+latc = ((latb(1)+lat_dc):lat_dc:(latb(end)+lat_dc))';
+
+figure
+colormap(jet)
+pcolor(lonc, latc,squeeze(dat2(:,:,1,39))');shading flat
+%caxis([3 7])
+caxis([33.75 33.95])
+colorbar
+set(gca,'PlotBoxAspectRatio',[1,1.5,1],'fontsize',16)
+yticks(-50.6:0.3:-49)
+xticks(1.3:0.3:3.4)
+ylabel('Latitude');
+xlabel('Longitude');
+fout = 'salt_daily.jpg';
+print('-djpeg90','-r300',fout);

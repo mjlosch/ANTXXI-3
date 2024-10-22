@@ -4,7 +4,7 @@ lonMin = 1.2;
 lonMax = 3.6;
 latMin = -50.7;
 latMax = -48.8;
-a=load('EIFEX_ADCP.txt');
+a=load('/Users/yye/ANTXXI-3/eifex_adcp_model/EIFEX_ADCP.txt');
 
 cm2m=0.01;
 
@@ -59,4 +59,4 @@ ii=find(isnan(vn(:))); vn(ii)=v(ii);
 ii=find(isnan(u(:)));  u(ii)=un(ii);
 ii=find(isnan(v(:)));  v(ii)=vn(ii);
 
-save eifex_adcp x y u v
+save /Users/yye/ANTXXI-3/output_tmp/eifex_adcp x y u v

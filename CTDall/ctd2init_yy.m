@@ -1,5 +1,5 @@
-load antxxi3
-load('../timeline.mat')
+load('../output_tmp/antxxi3.mat')
+load('../output_tmp/timeline.mat')
 %tlid=timeline.station*100+timeline.cast;
 firstday = 31+11; 
 lastday  = 31+29+20;
@@ -51,18 +51,18 @@ for k = 1:length(data)
     theta_tmp = data{k}.theta(itu);
     it = find(theta_tmp==-999);
     theta_tmp(it) = []; pt(it) = [];
-%    tmp1 = interp1(-pt,theta_tmp,zc,'nearest','extrap');
+    tmp1 = interp1(-pt,theta_tmp,zc,'nearest','extrap');
     tmp2 = interp1(-pt,theta_tmp,zc,'linear');
-%    inan=find(isnan(tmp2));
-%    tmp2(inan) = tmp1(inan);
+    inan=find(isnan(tmp2));
+    tmp2(inan) = tmp1(inan);
     theta(:,k) = tmp2;
     salt_tmp = data{k}.salt(its);
     is=find(salt_tmp==-999);
     salt_tmp(it) = []; ps(it) = [];
-%    tmp1 = interp1(-pt,salt_tmp,zc,'nearest','extrap');
+    tmp1 = interp1(-pt,salt_tmp,zc,'nearest','extrap');
     tmp2 = interp1(-pt,salt_tmp,zc,'linear');
-%    inan=find(isnan(tmp2));
-%    tmp2(inan) = tmp1(inan);
+    inan=find(isnan(tmp2));
+    tmp2(inan) = tmp1(inan);
     salt(:,k) = tmp2;
   end %if
 end %for
@@ -107,14 +107,27 @@ sinit(find(isnan(sinit))) = 0;
 
 prec='real*8';
 ieee='ieee-be';
-fid=fopen('theta.init_new','w',ieee);fwrite(fid,tinit,prec);fclose(fid);
-fid=fopen('salt.init_new','w',ieee);fwrite(fid,sinit,prec);fclose(fid);
+fid=fopen('../output_tmp/theta.init','w',ieee);fwrite(fid,tinit,prec);fclose(fid);
+fid=fopen('../output_tmp/salt.init','w',ieee);fwrite(fid,sinit,prec);fclose(fid);
+
+return
 
 % check binary output
-fid = fopen('salt.init_new','r');
+fid = fopen('../output_tmp/salt.init','r');
+ieee='ieee-be';
 dat1 = fread(fid,'real*8',ieee);
 fclose(fid);
 dat2 = reshape(dat1,[42 54 30]);
+
+nx = 42;
+ny = 54;
+lonb = [1.35, 3.445]; 
+lon_dc = diff(lonb)/(nx-1);
+lonc = ((lonb(1)+lon_dc):lon_dc:(lonb(end)+lon_dc))';
+latb = [-50.55, -48.80]; 
+lat_dc = diff(latb)/(ny-1);
+latc = ((latb(1)+lat_dc):lat_dc:(latb(end)+lat_dc))';
+
 figure
 colormap(jet)
 pcolor(lonc, latc,squeeze(dat2(:,:,1))');shading flat
@@ -128,3 +141,27 @@ ylabel('Latitude');
 xlabel('Longitude');
 fout = 'salt_init.jpg';
 print('-djpeg90','-r300',fout);
+
+% cut out open boundary conditions 
+% too low spacial resolution at the northmost/eastmost boundary: thus end-1!
+% salinity:
+sbcs=squeeze(sinit(:,1,:));
+sbcn=squeeze(sinit(:,end-1,:));
+sbcw=squeeze(sinit(1,:,:));
+sbce=squeeze(sinit(end-1,:,:));
+% temperature:
+tbcs=squeeze(tinit(:,1,:));
+tbcn=squeeze(tinit(:,end-1,:));
+tbcw=squeeze(tinit(1,:,:));
+tbce=squeeze(tinit(end-1,:,:));
+
+prec='real*8';
+ieee='ieee-be';
+fid=fopen('../output_tmp/tbcs','w',ieee);fwrite(fid,tbcs,prec);fclose(fid);
+fid=fopen('../output_tmp/tbcn','w',ieee);fwrite(fid,tbcn,prec);fclose(fid);
+fid=fopen('../output_tmp/tbcw','w',ieee);fwrite(fid,tbcw,prec);fclose(fid);
+fid=fopen('../output_tmp/tbce','w',ieee);fwrite(fid,tbce,prec);fclose(fid);
+fid=fopen('../output_tmp/sbcs','w',ieee);fwrite(fid,sbcs,prec);fclose(fid);
+fid=fopen('../output_tmp/sbcn','w',ieee);fwrite(fid,sbcn,prec);fclose(fid);
+fid=fopen('../output_tmp/sbcw','w',ieee);fwrite(fid,sbcw,prec);fclose(fid);
+fid=fopen('../output_tmp/sbce','w',ieee);fwrite(fid,sbce,prec);fclose(fid);
