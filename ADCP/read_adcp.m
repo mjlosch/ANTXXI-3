@@ -8,13 +8,13 @@
 % layer 3: 100m-150m
 % layer 4: 150m-200m ! Boris takes this as representative for mean flow
 % layer 5: 200m-250m
-% 
+%
 % format of continuous ADCP data eifex_all_uv.mat
 % uv = 79 depth layers x (u,v)*number of horiontal points
 % units = m/s
 % Volker Strass: everything above 100m is heavily contaminated by
 % intertial oscillations and other noise, not recommended for assimilation
-% 
+%
 % format of continuous ADCP data eifex_all_xy.mat
 % xyt = (lon lat julian_days) x number of horizontal points
 % z   = depth between measuments (m)
@@ -52,7 +52,7 @@ ua = uv(:,1:2:end);
 va = uv(:,2:2:end);
 clear uv
 load eifex_all_xy xyt z zc
-za  = -z; 
+za  = -z;
 zca = -zc;
 x = xyt(1,:);
 y = xyt(2,:);
@@ -65,8 +65,8 @@ if ~isempty(iz)
 end
 
 % load common time frame
-load('/Users/yye/ANTXXI-3/output_tmp/timeline.mat')
-firstday = 31+11; 
+load('../output_tmp/timeline.mat')
+firstday = 31+11;
 lastday  = 31+29+20;
 it = find(t>=firstday & t<=lastday);
 x = x(it);
@@ -75,28 +75,43 @@ t = t(it);
 ua = ua(:,it);
 va = va(:,it);
 
+addpath ../
+nx = 42;
+ny = 54;
+[llonc,llatc,zc,nz] = create_grid(nx,ny);
+lonc = llonc(1,:)';
+latc = llatc(:,1);
 % nx = 30;
 % ny = 60;
 % lonc = [min(alon(:)),max(alon(:))]; lonc = [lonc(1):diff(lonc)/(nx-1):lonc(2)]';
 % latc = [min(alat(:)),max(alat(:))]; latc = [latc(1):diff(latc)/(ny-1):latc(2)]';
-nx = 42;
-ny = 54;
-lonb = [1.35, 3.445]; 
-lon_dc = diff(lonb)/(nx-1);
-lonc = ((lonb(1)+lon_dc):lon_dc:(lonb(end)+lon_dc))';
-latb = [-50.55, -48.80]; 
-lat_dc = diff(latb)/(ny-1);
-latc = ((latb(1)+lat_dc):lat_dc:(latb(end)+lat_dc))';
+%nx = 42;
+%ny = 54;
+%lonb = [1.35, 3.445];
+%lon_dc = diff(lonb)/(nx-1);
+%lonc = ((lonb(1)+lon_dc):lon_dc:(lonb(end)+lon_dc))';
+%latb = [-50.55, -48.80];
+%lat_dc = diff(latb)/(ny-1);
+%latc = ((latb(1)+lat_dc):lat_dc:(latb(end)+lat_dc))';
+%zc = -[5:10:250]';
+%zc = -[5:10:145 156 170.25 189.25 212.50:25:487.50]';
+%nz = length(zc);
 
 long = lonc;
 latg = latc;
-%zc = -[5:10:250]';
-zc = -[5:10:145 156 170.25 189.25 212.50:25:487.50]';
-nz = length(zc);
 gmethod = 'linear';
+clear utmp vtmp
 for k = 1:length(zstrf)
-  utmp(:,:,k) = griddata(alon,alat,ustrf(:,:,k),long',latc,gmethod);
-  vtmp(:,:,k) = griddata(alon,alat,vstrf(:,:,k),lonc',latg,gmethod);
+  utmp1 = griddata(alon,alat,ustrf(:,:,k),long',latc,'nearest');
+  utmp2 = griddata(alon,alat,ustrf(:,:,k),long',latc,gmethod);
+  vtmp1 = griddata(alon,alat,vstrf(:,:,k),lonc',latg,'nearest');
+  vtmp2 = griddata(alon,alat,vstrf(:,:,k),lonc',latg,gmethod);
+  i0=isnan(utmp2)
+  utmp2(i0) = utmp1(i0)
+  i0=isnan(vtmp2)
+  vtmp2(i0) = vtmp1(i0)
+  utmp(:,:,k) = utmp2
+  vtmp(:,:,k) = vtmp2
 end
 uini = zeros([length(zc) size(utmp,1) size(utmp,2)]);
 vini = zeros([length(zc) size(utmp,1) size(utmp,2)]);
@@ -172,7 +187,7 @@ fid=fopen('../output_tmp/V.data.daily','w',ieee);fwrite(fid,vdata,prec);fclose(f
 
 return
 % check binary output
-fid = fopen('/Users/yye/ANTXXI-3/output_tmp/V.init','r');
+fid = fopen('../output_tmp/V.init','r');
 dat1 = fread(fid,'real*8',ieee);
 fclose(fid);
 dat2 = reshape(dat1,[42 54 30]);

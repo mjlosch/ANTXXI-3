@@ -1,7 +1,7 @@
 load('../output_tmp/antxxi3.mat')
 load('../output_tmp/timeline.mat')
 %tlid=timeline.station*100+timeline.cast;
-firstday = 31+11; 
+firstday = 31+11;
 lastday  = 31+29+20;
 
 % define grid
@@ -130,7 +130,8 @@ latc = ((latb(1)+lat_dc):lat_dc:(latb(end)+lat_dc))';
 
 figure
 colormap(jet)
-pcolor(lonc, latc,squeeze(dat2(:,:,1))');shading flat
+pcolor(llonc, llatc,squeeze(dat2(:,:,1))');shading flat
+hold on; plot(lon,lat,'+'); hold off
 %caxis([3 7])
 caxis([33.75 33.95])
 colorbar
