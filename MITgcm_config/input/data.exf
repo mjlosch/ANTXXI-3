@@ -11,7 +11,7 @@
  exf_iprec_obcs    = 64,
  exf_yftype        = 'RL',
  useExfCheckRange  = .FALSE.,
- useRelativeWind   = .TRUE.,
+ useRelativeWind   = .FALSE.,
  &
 #
  &EXF_NML_02
