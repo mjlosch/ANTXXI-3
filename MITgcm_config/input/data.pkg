@@ -1,0 +1,14 @@
+# Packages
+ &PACKAGES
+#useGMRedi =.TRUE.,
+ useGGL90 =.TRUE.,
+#useKPP =.TRUE.,
+ useOBCS = .TRUE.,
+ useCAL = .TRUE.,
+ useEXF = .true.,
+ useDiagnostics = .true.,
+#
+ useAUTODIFF   =.FALSE.,
+ useECCO       =.FALSE.,
+ useCTRL       =.TRUE.,
+ &
