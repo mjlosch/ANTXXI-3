@@ -2,6 +2,9 @@
 % uwind,vwind,atemp,dewpoint,dampfdruck,press,aqh,cloudcover
 load('../output_tmp/antxxi.mat')
 
+% meteological data starts from Jan 21 at 6pm!
+% not just die duration of fertilisation!
+
 %---------------------------------------
 % interpolate linearly over data gaps
 %---------------------------------------

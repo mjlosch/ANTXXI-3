@@ -31,7 +31,7 @@ a{5} = load('eddy2_strf_layer5.mat');
 
 alon = a{1}.alon;
 alat = a{1}.alat;
-for k = 1:length(zstrf);
+for k = 1:length(zstrf)
   ustrf(:,:,k) = a{k}.u;
   vstrf(:,:,k) = a{k}.v;
 end
@@ -187,7 +187,8 @@ fid=fopen('../output_tmp/V.data.daily','w',ieee);fwrite(fid,vdata,prec);fclose(f
 
 return
 % check binary output
-fid = fopen('../output_tmp/V.init','r');
+fid = fopen('/Users/yye/Models/OIF/eifex_input/sbcn','r');
+%fid = fopen('../output_tmp/V.init','r');
 dat1 = fread(fid,'real*8',ieee);
 fclose(fid);
 dat2 = reshape(dat1,[42 54 30]);
