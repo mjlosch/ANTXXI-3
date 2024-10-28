@@ -1,4 +1,4 @@
-% read arrays of 3-hourly data of
+% 1) read arrays of 3-hourly data of
 % uwind,vwind,atemp,dewpoint,dampfdruck,press,aqh,cloudcover
 load('../output_tmp/antxxi.mat')
 
@@ -19,7 +19,6 @@ in=find(~isnan(cloudcover));
 cloudcover = interp1(time(in),cloudcover(in),time,'linear','extrap');
 cloudcover(find(cloudcover>1))=1;
 cloudcover(find(cloudcover<0))=0;
-
 
 %---------------------------------------
 % calculate downward longwave radiation
@@ -64,6 +63,22 @@ for i=1:nt
     lw_down(:,:,i)=repmat(lwdown(i),[nx,ny]);    
 end
 
+% 2) read data of precipitation and shortwave radiation from poldat
+% measured every 10 minutes, starting from Jan 21 18:00
+load('../output_tmp/antxxi_poldat.mat')
+% average to 3-hourly, same as 508 points in antxxi.mat
+time2=time(1):0.0069:(time(1)+9126*0.0069);
+in=find(~isnan(swdown)); swdown2=interp1(time(in),swdown(in),time2,'linear','extrap');
+
+dt = 1;
+for i = 1:508
+    if dt+17>length(time2) break
+    else
+        swdown_3h(i) = mean(swdown2(dt:dt+17));
+        dt = dt+18;
+    end
+end
+
 prec='real*8';
 ieee='ieee-be';
 fid=fopen('../output_tmp/uwind.42x54.3hourly','w',ieee);fwrite(fid,u_wind,prec);fclose(fid);
@@ -74,4 +89,5 @@ fid=fopen('../output_tmp/vappres.42x54.3hourly','w',ieee);fwrite(fid,vap_pres,pr
 fid=fopen('../output_tmp/press.42x54.3hourly','w',ieee);fwrite(fid,pres,prec);fclose(fid);
 fid=fopen('../output_tmp/aqh.42x54.3hourly','w',ieee);fwrite(fid,a_qh,prec);fclose(fid);
 fid=fopen('../output_tmp/lwdown.42x54.3hourly','w',ieee);fwrite(fid,lw_down,prec);fclose(fid);
+fid=fopen('../output_tmp/swdown_new.42x54.3hourly','w',ieee);fwrite(fid,swdown_3h,prec);fclose(fid);
 
