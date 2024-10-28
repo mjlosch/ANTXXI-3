@@ -9,8 +9,8 @@ function [llonc,llatc,zc,nz] = create_grid(nx,ny)
 % east-end longitude of the patch: 42*3.6/(111.321*cos(49.4))+1.35
 % north-end latitude of the patch: 54*3.6/111-50.55
 
-% nx = 42;
-% ny = 54;
+nx = 42;
+ny = 54;
 
 % lonc = [  1.3166,  3.4871]; lonc = (lonc(1):diff(lonc)/(nx-1):lonc(2))';
 % latc = [-50.6027,-48.7902]; latc = (latc(1):diff(latc)/(ny-1):latc(2))';
@@ -26,5 +26,24 @@ latc = ((latb(1)+lat_dc):lat_dc:(latb(end)+lat_dc))';
 zc = -[5:10:145 156 170.25 189.25 212.50:25:487.50]';
 nz = length(zc);
 
-[llonc,llatc]=meshgrid(lonc,latc);
+[llonc,llatc,lzc]=meshgrid(lonc,latc,zc);
+
+prec='real*8';
+ieee='ieee-be';
+fid=fopen('../output_tmp/lon','w',ieee);fwrite(fid,llonc,prec);fclose(fid);
+fid=fopen('../output_tmp/lat','w',ieee);fwrite(fid,llatc,prec);fclose(fid);
+fid=fopen('../output_tmp/dep','w',ieee);fwrite(fid,lzc,prec);fclose(fid);
+
+gridfile = '../output_tmp/grid.nc';
+nccreate(gridfile,'lon','Dimensions',{'x',42});
+ncwrite(gridfile,'lon',lonc);
+ncwriteatt(gridfile,"lon","description","longitude")
+nccreate(gridfile,'lat','Dimensions',{'y',54});
+ncwrite(gridfile,'lat',latc);
+ncwriteatt(gridfile,"lat","description","latitude")
+nccreate(gridfile,'depth','Dimensions',{'z',30});
+ncwrite(gridfile,'depth',zc);
+ncwriteatt(gridfile,"depth","description","center of vertical layer")
+ncwriteatt(gridfile,"depth","unit","meter")
+
 
