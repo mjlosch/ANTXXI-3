@@ -11,21 +11,19 @@
  GGL90m2 = 3.0,
 # with IDEMiX this needs to be zero
  GGL90TKEmin = 1.e-6,
- GGL90TKEbottom=4.e-6,
+ GGL90TKEbottom=0.e-6,
  GGL90TKEsurfMin=1.e-4,
  GGL90mixingLengthMin=,
  mxlMaxFlag=2,
  GGL90viscMax=1.e2,
  GGL90diffMax=1.e2,
  GGL90TKEFile=,
- GGL90_dirichlet=.FALSE.,
-#GGL90_dirichlet=.TRUE.,
+#GGL90_dirichlet=.FALSE.,
+ GGL90_dirichlet=.TRUE.,
  useIDEMIX  = .FALSE.,
  &
 
  &GGL90_PARM02
  IDEMIX_include_GM_bottom = .FALSE.,
  IDEMIX_include_GM        = .FALSE.,
- IDEMIX_tidal_file='/albedo/home/mlosch/idemix_forcing/idemix_tidal_forcing_stormtide.llc270.bin',
- IDEMIX_wind_file ='/albedo/home/mlosch/idemix_forcing/idemix_wind_forcing_cfsr.llc270.bin',
  &

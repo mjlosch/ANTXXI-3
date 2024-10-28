@@ -17,9 +17,12 @@
 #diffKhT=10.,
 #diffKhS=10.,
 # with idemix, these are zero
- viscAr =1.E-4,
- diffKrT=2.E-5,
- diffKrS=2.E-5,
+#viscAr =1.E-4,
+#diffKrT=2.E-5,
+#diffKrS=2.E-5,
+ viscAr =0.E-4,
+ diffKrT=0.E-5,
+ diffKrS=0.E-5,
 #
  bottomDragQuadratic = 0.000,
 #when using ggl90
