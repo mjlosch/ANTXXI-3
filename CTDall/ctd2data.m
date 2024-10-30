@@ -51,21 +51,11 @@ for k = 1:length(data)
     theta_tmp = data{k}.theta(itu);
     it = find(theta_tmp==-999);
     theta_tmp(it) = []; pt(it) = [];
-%    theta(:,k) = interp1(-pt,theta_tmp,zc,'linear');
-    tmp1 = interp1(-pt,theta_tmp,zc,'nearest','extrap');
-    tmp2 = interp1(-pt,theta_tmp,zc,'linear');
-    inan=find(isnan(tmp2));
-    tmp2(inan) = tmp1(inan);
-    theta(:,k) = tmp2;
+    theta(:,k) = interp1(-pt,theta_tmp,zc,'linear');
     salt_tmp = data{k}.salt(its);
     is=find(salt_tmp==-999);
     salt_tmp(it) = []; ps(it) = [];
-%    salt(:,k)  = interp1(-ps,salt_tmp,zc,'linear');
-    tmp1 = interp1(-pt,salt_tmp,zc,'nearest','extrap');
-    tmp2 = interp1(-pt,salt_tmp,zc,'linear');
-    inan=find(isnan(tmp2));
-    tmp2(inan) = tmp1(inan);
-    salt(:,k) = tmp2;
+    salt(:,k)  = interp1(-ps,salt_tmp,zc,'linear');
   end %if
 end %for
 ik = find(isnan(lon));
@@ -104,8 +94,8 @@ end
 tdata = permute(tdata,[2 1 3 4]);
 sdata = permute(sdata,[2 1 3 4]);
 
-tdata(find(isnan(tdata))) = 0;
-sdata(find(isnan(sdata))) = 0;
+tdata(find(isnan(tdata))) = -999;
+sdata(find(isnan(sdata))) = -999;
 
 prec='real*8';
 ieee='ieee-be';
@@ -132,7 +122,7 @@ latc = ((latb(1)+lat_dc):lat_dc:(latb(end)+lat_dc))';
 
 figure
 colormap(jet)
-pcolor(llonc,llatc,squeeze(dat2(:,:,30,1))');shading flat
+pcolor(llonc,llatc,squeeze(dat2(:,:,1,1))');shading flat
 hold on; plot(lon,lat,'+'); hold off
 caxis([0 7])
 %caxis([33.75 34.5])

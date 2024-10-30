@@ -162,15 +162,18 @@ end
 udata = permute(udata,[3 2 1 4]);
 vdata = permute(vdata,[3 2 1 4]);
 
-figure
-m_proj('lambert','lon',[min(llonc(:)),max(llonc(:))], ...
-	 'lat',[min(llatc(:)),max(llatc(:))]);
-k=2; qh = m_quiver(llonc,llatc,udata(:,:,k,1),vdata(:,:,k,1),'k');m_grid;
+udata(find(isnan(udata))) = -999;
+vdata(find(isnan(vdata))) = -999;
+
+% figure
+% m_proj('lambert','lon',[min(llonc(:)),max(llonc(:))], ...
+% 	 'lat',[min(llatc(:)),max(llatc(:))]);
+% k=2; qh = m_quiver(llonc,llatc,udata(:,:,k,1),vdata(:,:,k,1),'k');m_grid;
 
 prec='real*8';
 ieee='ieee-be';
-fid=fopen('../output_tmp/U.init','w',ieee);fwrite(fid,uini,prec);fclose(fid);
-fid=fopen('../output_tmp/V.init','w',ieee);fwrite(fid,vini,prec);fclose(fid);
+%fid=fopen('../output_tmp/U.init','w',ieee);fwrite(fid,uini,prec);fclose(fid);
+%fid=fopen('../output_tmp/V.init','w',ieee);fwrite(fid,vini,prec);fclose(fid);
 fid=fopen('../output_tmp/U.data.daily','w',ieee);fwrite(fid,udata,prec);fclose(fid);
 fid=fopen('../output_tmp/V.data.daily','w',ieee);fwrite(fid,vdata,prec);fclose(fid);
 
