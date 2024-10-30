@@ -81,21 +81,6 @@ ny = 54;
 [llonc,llatc,zc,nz] = create_grid(nx,ny);
 lonc = llonc(1,:)';
 latc = llatc(:,1);
-% nx = 30;
-% ny = 60;
-% lonc = [min(alon(:)),max(alon(:))]; lonc = [lonc(1):diff(lonc)/(nx-1):lonc(2)]';
-% latc = [min(alat(:)),max(alat(:))]; latc = [latc(1):diff(latc)/(ny-1):latc(2)]';
-%nx = 42;
-%ny = 54;
-%lonb = [1.35, 3.445];
-%lon_dc = diff(lonb)/(nx-1);
-%lonc = ((lonb(1)+lon_dc):lon_dc:(lonb(end)+lon_dc))';
-%latb = [-50.55, -48.80];
-%lat_dc = diff(latb)/(ny-1);
-%latc = ((latb(1)+lat_dc):lat_dc:(latb(end)+lat_dc))';
-%zc = -[5:10:250]';
-%zc = -[5:10:145 156 170.25 189.25 212.50:25:487.50]';
-%nz = length(zc);
 
 long = lonc;
 latg = latc;
@@ -106,12 +91,12 @@ for k = 1:length(zstrf)
   utmp2 = griddata(alon,alat,ustrf(:,:,k),long',latc,gmethod);
   vtmp1 = griddata(alon,alat,vstrf(:,:,k),lonc',latg,'nearest');
   vtmp2 = griddata(alon,alat,vstrf(:,:,k),lonc',latg,gmethod);
-  i0=isnan(utmp2)
-  utmp2(i0) = utmp1(i0)
-  i0=isnan(vtmp2)
-  vtmp2(i0) = vtmp1(i0)
-  utmp(:,:,k) = utmp2
-  vtmp(:,:,k) = vtmp2
+  i0=isnan(utmp2);
+  utmp2(i0) = utmp1(i0);
+  i0=isnan(vtmp2);
+  vtmp2(i0) = vtmp1(i0);
+  utmp(:,:,k) = utmp2;
+  vtmp(:,:,k) = vtmp2;
 end
 uini = zeros([length(zc) size(utmp,1) size(utmp,2)]);
 vini = zeros([length(zc) size(utmp,1) size(utmp,2)]);
@@ -130,7 +115,6 @@ for j = 1:size(utmp,1)
     vini(:,j,i) = v2;
   end
 end
-
 % initial fields
 uini = permute(uini,[3 2 1]);
 vini = permute(vini,[3 2 1]);
@@ -178,6 +162,11 @@ end
 udata = permute(udata,[3 2 1 4]);
 vdata = permute(vdata,[3 2 1 4]);
 
+figure
+m_proj('lambert','lon',[min(llonc(:)),max(llonc(:))], ...
+	 'lat',[min(llatc(:)),max(llatc(:))]);
+k=2; qh = m_quiver(llonc,llatc,udata(:,:,k,1),vdata(:,:,k,1),'k');m_grid;
+
 prec='real*8';
 ieee='ieee-be';
 fid=fopen('../output_tmp/U.init','w',ieee);fwrite(fid,uini,prec);fclose(fid);
@@ -187,22 +176,24 @@ fid=fopen('../output_tmp/V.data.daily','w',ieee);fwrite(fid,vdata,prec);fclose(f
 
 return
 % check binary output
-fid = fopen('/Users/yye/Models/OIF/eifex_input/sbcn','r');
+%fid = fopen('/Users/yye/Models/OIF/eifex_input/sbcn','r');
 %fid = fopen('../output_tmp/V.init','r');
+fid = fopen('../output_tmp/U.data.daily','r');
 dat1 = fread(fid,'real*8',ieee);
 fclose(fid);
-dat2 = reshape(dat1,[42 54 30]);
+dat2 = reshape(dat1,[42 54 30 39]);
+
+fid = fopen('../output_tmp/V.data.daily','r');
+dat3 = fread(fid,'real*8',ieee);
+fclose(fid);
+dat4 = reshape(dat1,[42 54 30 39]);
+
+addpath('/Users/yye/matlab_central','/Users/yye/matlab_central/matlab_mmap')
+
 figure
-colormap(jet)
-pcolor(lonc, latc,squeeze(dat2(:,:,10))');shading flat
-%caxis([3 7])
-caxis([33.75 33.95])
-colorbar
-set(gca,'PlotBoxAspectRatio',[1,1.5,1],'fontsize',16)
-yticks(-50.6:0.3:-49)
-xticks(1.3:0.3:3.4)
-ylabel('Latitude');
-xlabel('Longitude');
+m_proj('lambert','lon',[min(llonc(:)),max(llonc(:))], ...
+	 'lat',[min(llatc(:)),max(llatc(:))]);
+k=2; qh = m_quiver(llonc,llatc,squeeze(dat2(:,:,k,1))',squeeze(dat4(:,:,k,1))','k'); m_grid;
 
 % cut out open boundary conditions 
 % too low spacial resolution at the northmost/eastmost boundary: thus end-1!

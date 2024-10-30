@@ -51,11 +51,21 @@ for k = 1:length(data)
     theta_tmp = data{k}.theta(itu);
     it = find(theta_tmp==-999);
     theta_tmp(it) = []; pt(it) = [];
-    theta(:,k) = interp1(-pt,theta_tmp,zc,'linear');
+%    theta(:,k) = interp1(-pt,theta_tmp,zc,'linear');
+    tmp1 = interp1(-pt,theta_tmp,zc,'nearest','extrap');
+    tmp2 = interp1(-pt,theta_tmp,zc,'linear');
+    inan=find(isnan(tmp2));
+    tmp2(inan) = tmp1(inan);
+    theta(:,k) = tmp2;
     salt_tmp = data{k}.salt(its);
     is=find(salt_tmp==-999);
     salt_tmp(it) = []; ps(it) = [];
-    salt(:,k)  = interp1(-ps,salt_tmp,zc,'linear');
+%    salt(:,k)  = interp1(-ps,salt_tmp,zc,'linear');
+    tmp1 = interp1(-pt,salt_tmp,zc,'nearest','extrap');
+    tmp2 = interp1(-pt,salt_tmp,zc,'linear');
+    inan=find(isnan(tmp2));
+    tmp2(inan) = tmp1(inan);
+    salt(:,k) = tmp2;
   end %if
 end %for
 ik = find(isnan(lon));
@@ -103,31 +113,33 @@ fid=fopen('../output_tmp/theta.data.daily','w',ieee);fwrite(fid,tdata,prec);fclo
 fid=fopen('../output_tmp/salt.data.daily','w',ieee);fwrite(fid,sdata,prec);fclose(fid);
 
 return
+
 % check binary output
-fid = fopen('../output_tmp/salt.data.daily','r');
+fid = fopen('../output_tmp/theta.data.daily','r');
 ieee='ieee-be';
 dat1 = fread(fid,'real*8',ieee);
 fclose(fid);
 dat2 = reshape(dat1,[42 54 30 39]);
 
+nx = 42;
+ny = 54;
 lonb = [1.35, 3.445]; 
 lon_dc = diff(lonb)/(nx-1);
 lonc = ((lonb(1)+lon_dc):lon_dc:(lonb(end)+lon_dc))';
-
 latb = [-50.55, -48.80]; 
 lat_dc = diff(latb)/(ny-1);
 latc = ((latb(1)+lat_dc):lat_dc:(latb(end)+lat_dc))';
 
 figure
 colormap(jet)
-pcolor(lonc, latc,squeeze(dat2(:,:,1,39))');shading flat
-%caxis([3 7])
-caxis([33.75 33.95])
+pcolor(llonc,llatc,squeeze(dat2(:,:,30,1))');shading flat
+hold on; plot(lon,lat,'+'); hold off
+caxis([0 7])
+%caxis([33.75 34.5])
 colorbar
 set(gca,'PlotBoxAspectRatio',[1,1.5,1],'fontsize',16)
 yticks(-50.6:0.3:-49)
 xticks(1.3:0.3:3.4)
 ylabel('Latitude');
 xlabel('Longitude');
-fout = 'salt_daily.jpg';
-print('-djpeg90','-r300',fout);
+

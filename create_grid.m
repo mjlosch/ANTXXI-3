@@ -26,24 +26,24 @@ latc = ((latb(1)+lat_dc):lat_dc:(latb(end)+lat_dc))';
 zc = -[5:10:145 156 170.25 189.25 212.50:25:487.50]';
 nz = length(zc);
 
-[llonc,llatc,lzc]=meshgrid(lonc,latc,zc);
+[llonc,llatc]=meshgrid(lonc,latc);
 
-prec='real*8';
-ieee='ieee-be';
-fid=fopen('../output_tmp/lon','w',ieee);fwrite(fid,llonc,prec);fclose(fid);
-fid=fopen('../output_tmp/lat','w',ieee);fwrite(fid,llatc,prec);fclose(fid);
-fid=fopen('../output_tmp/dep','w',ieee);fwrite(fid,lzc,prec);fclose(fid);
-
-gridfile = '../output_tmp/grid.nc';
-nccreate(gridfile,'lon','Dimensions',{'x',42});
-ncwrite(gridfile,'lon',lonc);
-ncwriteatt(gridfile,"lon","description","longitude")
-nccreate(gridfile,'lat','Dimensions',{'y',54});
-ncwrite(gridfile,'lat',latc);
-ncwriteatt(gridfile,"lat","description","latitude")
-nccreate(gridfile,'depth','Dimensions',{'z',30});
-ncwrite(gridfile,'depth',zc);
-ncwriteatt(gridfile,"depth","description","center of vertical layer")
-ncwriteatt(gridfile,"depth","unit","meter")
+% prec='real*8';
+% ieee='ieee-be';
+% fid=fopen('../output_tmp/lon','w',ieee);fwrite(fid,llonc,prec);fclose(fid);
+% fid=fopen('../output_tmp/lat','w',ieee);fwrite(fid,llatc,prec);fclose(fid);
+% fid=fopen('../output_tmp/dep','w',ieee);fwrite(fid,lzc,prec);fclose(fid);
+% 
+% gridfile = '../output_tmp/grid.nc';
+% nccreate(gridfile,'lon','Dimensions',{'x',42});
+% ncwrite(gridfile,'lon',lonc);
+% ncwriteatt(gridfile,"lon","description","longitude")
+% nccreate(gridfile,'lat','Dimensions',{'y',54});
+% ncwrite(gridfile,'lat',latc);
+% ncwriteatt(gridfile,"lat","description","latitude")
+% nccreate(gridfile,'depth','Dimensions',{'z',30});
+% ncwrite(gridfile,'depth',zc);
+% ncwriteatt(gridfile,"depth","description","center of vertical layer")
+% ncwriteatt(gridfile,"depth","unit","meter")
 
 
