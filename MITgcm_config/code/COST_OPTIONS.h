@@ -44,14 +44,14 @@ C       >>> Cost function contributions
 #undef ALLOW_COST_ATLANTIC
 #undef ALLOW_COST_ATLANTIC_HEAT
 
-#define ALLOW_COST_TEST
-#define ALLOW_COST_TSQUARED
+#undef ALLOW_COST_TEST
+#undef ALLOW_COST_TSQUARED
 #undef ALLOW_COST_TRACER
 
 C#define ALLOW_COST_TEMP
 C#define ALLOW_COST_HFLUXM
 
-#define ALLOW_COST_MEAN_SALT
+#undef ALLOW_COST_MEAN_SALT
 
 C       >>> ALLOW_GENCOST_CONTRIBUTION: interactive way to add basic 2D cost
 C         function terms.
