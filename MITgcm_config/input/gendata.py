@@ -76,3 +76,48 @@ print(' dySpacing = %f,'%np.diff(ds.lat).mean())
 print(' xgOrigin = %f,'%(ds.lon[0].values-0.5*np.diff(ds.lon).mean()))
 print(' ygOrigin = %f,'%(ds.lat[0].values-0.5*np.diff(ds.lat).mean()))
 print(' delR = ', [dd for dd in dz])
+
+# weights and errors
+
+# for the cost function terms with model-data comparisions we need
+# store the uncertainties, (i.e. in units of the corresponding fields)
+s = '100., -999.\n'
+ascii = s.encode('ascii')
+
+with open('data.err','wb') as f:
+    # dummy header
+    f.write(ascii)
+    for k in range(len(sigt)):
+        s = '%f %f %f\n'%(sigt[k],sigs[k],sigu[k]/100.)
+        f.write(s.encode('ascii'))
+
+tmpfld = np.ones((nz,ny,nx))
+for k in range(len(sigt)):
+    tmpfld[k,:,:]=sigt[k] #(1./sigt[k])**2
+
+writefield('sigma_theta.bin',tmpfld.astype(prec))
+writefield("weights_theta.bin",1./tmpfld.astype(prec)**2)
+
+tmpfld = np.ones((nz,ny,nx))
+for k in range(len(sigt)):
+    tmpfld[k,:,:]=sigs[k] #(1./sigs[k])**2
+
+writefield('sigma_salt.bin',tmpfld.astype(prec))
+writefield("weights_salt.bin",1./tmpfld.astype(prec)**2)
+
+tmpfld = np.ones((nz,ny,nx))
+for k in range(len(sigt)):
+    tmpfld[k,:,:]=sigu[k]/100. #(100./sigu[k])**2
+
+writefield('sigma_vel.bin',tmpfld.astype(prec))
+
+writefield('weights_diffkr.bin',np.ones((ny,nx),dtype=prec)/1e-10)
+
+# for the cost function penalty terms for the control variables we
+# need store the weighs = 1/uncertainties^2, (i.e. in 1/units^2)
+
+# errors
+fnames = ['sflux','hflux','tau']
+errs   = [2.e-9, 2.0, 0.02]
+for k,fn in enumerate(fnames):
+    writefield("weights_%s.bin"%fn,(np.ones((ny,nx))/errs[k]**2).astype(prec))

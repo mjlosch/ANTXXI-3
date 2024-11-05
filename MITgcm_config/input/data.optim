@@ -1,2 +1,11 @@
- &optim
- &
+&optim
+ optimcycle = 0,
+ numiter = 100,
+ nfunc = 10,
+ dfminFrac = 0.1,
+ iprint = 10,
+ nupdate = 8,
+/
+
+&M1QN3
+/
