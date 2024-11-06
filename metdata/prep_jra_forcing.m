@@ -39,20 +39,24 @@ latb = [-50.55, -48.80];
 lat_dc = diff(latb)/(54-1);
 latc2 = ((latb(1)+lat_dc):lat_dc:(latb(end)+lat_dc))';
 
-for i = 1:54
-    ydiff = abs(latc - latc2(i));
-    [m,iy(i)] = min(ydiff);
-end
-for j = 1:42
-    xdiff = abs(lonc - lonc2(j));
-    [n,ix(j)] = min(xdiff);
-end
+[X,Y] = ndgrid(lonc,latc);
+F = griddedInterpolant(X,Y,prec2);
+[X2,Y2] = ndgrid(lonc2,latc2);
+prec3 = F(lonc2,latc2);
+
+% for i = 1:54
+%     ydiff = abs(latc - latc2(i));
+%     [m,iy(i)] = min(ydiff);
+% end
+% for j = 1:42
+%     xdiff = abs(lonc - lonc2(j));
+%     [n,ix(j)] = min(xdiff);
+% end
+% sw_down = swlw2(ix,iy,t1:tn);
 
 t1 = 20*8+7;
 tn = t1+507;
-
-sw_down = swlw2(ix,iy,t1:tn);
-precip = prec2(ix,iy,t1:tn);
+precip = prec3(:,:,t1:tn);
 
 prec='real*8';
 ieee='ieee-be';
