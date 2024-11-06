@@ -19,7 +19,7 @@
  atempfile         = 'atemp.42x54.3hourly',
  aqhfile           = 'aqh.42x54.3hourly',
  apressurefile     = 'press.42x54.3hourly',
- swdownfile        = 'swdown.42x54.3hourly',
+ swdownfile        = 'swdown_new.42x54.3hourly',
  lwdownfile        = 'lwdown.42x54.3hourly',
  uwindfile         = 'uwind.42x54.3hourly',
  vwindfile         = 'vwind.42x54.3hourly',
@@ -61,9 +61,9 @@
  exf_offset_atemp  = 273.15,
 #exf_inscal_swdown = -1.,
 #exf_inscal_lwdown = -1.,
-# precipitation is already in m/s, so this change of units is not necessary
+# precipitation is in kg/m^2, convert to m/s
 # 1/(1000 kg/m^3)
-#exf_inscal_precip = 1.e-03,
+ exf_inscal_precip = 1.e-03,
  &
 #
  &EXF_NML_04
