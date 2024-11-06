@@ -81,7 +81,7 @@ print(' delR = ', [dd for dd in dz])
 
 # for the cost function terms with model-data comparisions we need
 # store the uncertainties, (i.e. in units of the corresponding fields)
-s = '100., -999.\n'
+s = '100. -999.\n'
 ascii = s.encode('ascii')
 
 with open('data.err','wb') as f:

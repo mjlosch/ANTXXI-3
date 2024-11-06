@@ -8,7 +8,7 @@
  useEXF = .true.,
  useDiagnostics = .true.,
 #
- useAUTODIFF   =.FALSE.,
- useECCO       =.FALSE.,
+ useAUTODIFF   =.TRUE.,
+ useECCO       =.TRUE.,
  useCTRL       =.TRUE.,
  &
