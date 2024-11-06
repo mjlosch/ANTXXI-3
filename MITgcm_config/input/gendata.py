@@ -1,8 +1,24 @@
 import numpy as np
-
-from myutils import *
+import sys
 
 import xarray as xr
+
+def writefield(fname,data):
+    """Call signatures::
+
+    writefield(filename, numpy.ndarray)
+
+    Write unblocked binary data.
+    """
+
+    if sys.byteorder == 'little': data.byteswap(True)
+
+    fid = open(fname,"wb")
+    data.tofile(fid)
+    fid.close()
+
+    # switch back to machine format
+    if sys.byteorder == 'little': data.byteswap(True)
 
 nx,ny,nz = 42,54,30
 
@@ -14,7 +30,7 @@ writefield('flat_bottom.bin',H.astype(prec))
 
 writefield('wt_ones.data',np.ones((nz,ny,nx),dtype=prec))
 
-ds=xr.open_dataset('../../output_tmp/grid.nc')
+ds=xr.open_dataset('grid.nc')
 
 # data taken from Losch et al 2014,
 zc = np.asarray(
