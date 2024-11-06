@@ -26,9 +26,10 @@ do
     it=`echo $myiter | awk '{printf "%03i",$1}'`
     echo "iteration ${myiter}"
     # increment counter in data.optim
-    sed -i .${it} "s/.*optimcycle.*/ optimcycle=${myiter},/" data.optim
+    sed -e "s/.*optimcycle.*/ optimcycle=${myiter},/" data.optim > data.optim.${it}
+    \cp -f data.optim.${it} data.optim
     mpirun -np 4 ./mitgcmuv_ad
-    mv STDOUT.0000 stdout.${it}
+    \mv STDOUT.0000 stdout.${it}
     ./optim.x > opt${it}.txt
     m1qn3out=`grep "m1qn3: output mode" m1qn3_output.txt`
     if test "x${m1qn3out}" != x; then
