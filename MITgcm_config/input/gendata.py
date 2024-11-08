@@ -23,6 +23,7 @@ def writefield(fname,data):
 nx,ny,nz = 42,54,30
 
 prec='float64'
+wprec = 'float64'
 
 H = -500.*np.ones((ny,nx))
 
@@ -116,14 +117,14 @@ for k in range(len(sigt)):
     tmpfld[k,:,:]=sigt[k] #(1./sigt[k])**2
 
 writefield('sigma_theta.bin',tmpfld.astype(prec))
-writefield("weights_theta.bin",1./tmpfld.astype(prec)**2)
+writefield("weights_theta.bin",1./tmpfld.astype(wprec)**2)
 
 tmpfld = np.ones((nz,ny,nx))
 for k in range(len(sigt)):
     tmpfld[k,:,:]=sigs[k] #(1./sigs[k])**2
 
 writefield('sigma_salt.bin',tmpfld.astype(prec))
-writefield("weights_salt.bin",1./tmpfld.astype(prec)**2)
+writefield("weights_salt.bin",1./tmpfld.astype(wprec)**2)
 
 tmpfld = np.ones((nz,ny,nx))
 for k in range(len(sigt)):
@@ -134,10 +135,10 @@ writefield('sigma_vel.bin',tmpfld.astype(prec))
 # for the cost function penalty terms for the control variables we
 # need store the weighs = 1/uncertainties^2, (i.e. in 1/units^2)
 
-writefield('weights_diffkr.bin',np.ones((nz,ny,nx),dtype=prec)/1e-10)
+writefield('weights_diffkr.bin',np.ones((nz,ny,nx),dtype=wprec)/1e-10)
 
 # errors
 fnames = ['sflux','hflux','tau']
 errs   = [2.e-9, 2.0, 0.02]
 for k,fn in enumerate(fnames):
-    writefield("weights_%s.bin"%fn,(np.ones((ny,nx))/errs[k]**2).astype(prec))
+    writefield("weights_%s.bin"%fn,(np.ones((ny,nx))/errs[k]**2).astype(wprec))
