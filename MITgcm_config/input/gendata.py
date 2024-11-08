@@ -39,36 +39,36 @@ zc = np.asarray(
      189.25, 212.50, 237.50, 262.50, 287.50, 312.50, 337.50,
      362.50, 387.50, 412.50, 437.50, 462.50,  487.50])
 
-tmp = np.asarray([0.2834, 0.0396, 10.0,
-                  0.2000, 0.0200, 10.0,
-                  0.2000, 0.0200, 10.0,
-                  0.2000, 0.0200, 10.0,
-                  0.2000, 0.0200, 10.0,
-                  0.2000, 0.0200, 10.0,
-                  0.2000, 0.0200, 10.0,
-                  0.2000, 0.0200, 10.0,
-                  0.2048, 0.0200, 10.0,
-                  0.2000, 0.0200, 10.0,
-                  0.2622, 0.0200, 10.0,
-                  0.4424, 0.0200, 10.0,
-                  0.4786, 0.0200, 10.0,
-                  0.4881, 0.0214, 10.0,
-                  0.5862, 0.0268, 10.0,
-                  0.6418, 0.0340, 10.0,
-                  0.6012, 0.0370, 10.0,
-                  0.4528, 0.0362, 10.0,
-                  0.2000, 0.0258, 10.0,
-                  0.2000, 0.0222, 10.0,
-                  0.2000, 0.0320, 10.0,
-                  0.2084, 0.0478, 10.0,
-                  0.3688, 0.0716, 10.0,
-                  0.3330, 0.0728, 10.0,
-                  0.3320, 0.0702, 10.0,
-                  0.2566, 0.0568, 10.0,
-                  0.2252, 0.0388, 10.0,
-                  0.2234, 0.0372, 10.0,
-                  0.2000, 0.0278, 10.0,
-                  0.2000, 0.0264, 10.0])
+tmp = np.asarray([0.2834, 0.0396, 0.1,
+                  0.2000, 0.0200, 0.1,
+                  0.2000, 0.0200, 0.1,
+                  0.2000, 0.0200, 0.1,
+                  0.2000, 0.0200, 0.1,
+                  0.2000, 0.0200, 0.1,
+                  0.2000, 0.0200, 0.1,
+                  0.2000, 0.0200, 0.1,
+                  0.2048, 0.0200, 0.1,
+                  0.2000, 0.0200, 0.1,
+                  0.2622, 0.0200, 0.1,
+                  0.4424, 0.0200, 0.1,
+                  0.4786, 0.0200, 0.1,
+                  0.4881, 0.0214, 0.1,
+                  0.5862, 0.0268, 0.1,
+                  0.6418, 0.0340, 0.1,
+                  0.6012, 0.0370, 0.1,
+                  0.4528, 0.0362, 0.1,
+                  0.2000, 0.0258, 0.1,
+                  0.2000, 0.0222, 0.1,
+                  0.2000, 0.0320, 0.1,
+                  0.2084, 0.0478, 0.1,
+                  0.3688, 0.0716, 0.1,
+                  0.3330, 0.0728, 0.1,
+                  0.3320, 0.0702, 0.1,
+                  0.2566, 0.0568, 0.1,
+                  0.2252, 0.0388, 0.1,
+                  0.2234, 0.0372, 0.1,
+                  0.2000, 0.0278, 0.1,
+                  0.2000, 0.0264, 0.1])
 
 sigt = tmp[::3]
 sigs = tmp[1::3]
@@ -97,6 +97,7 @@ print(' delR = ', [dd for dd in dz])
 
 # for the cost function terms with model-data comparisions we need
 # store the uncertainties, (i.e. in units of the corresponding fields)
+# ratio and dummy
 s = '100. -999.\n'
 ascii = s.encode('ascii')
 
@@ -104,7 +105,10 @@ with open('data.err','wb') as f:
     # dummy header
     f.write(ascii)
     for k in range(len(sigt)):
-        s = '%f %f %f\n'%(sigt[k],sigs[k],sigu[k]/100.)
+        s = '%f %f %f\n'%(sigt[k],sigs[k],sigu[k])
+# this would reflect the paper with sigt/s scaled by 0.1 (ratio=100)
+# but sigu not scaled (seee ecco_cost_weights.F)
+#       s = '%f %f %f\n'%(sigt[k],sigs[k],sigu[k]*10)
         f.write(s.encode('ascii'))
 
 tmpfld = np.ones((nz,ny,nx))
@@ -123,14 +127,14 @@ writefield("weights_salt.bin",1./tmpfld.astype(prec)**2)
 
 tmpfld = np.ones((nz,ny,nx))
 for k in range(len(sigt)):
-    tmpfld[k,:,:]=sigu[k]/100. #(100./sigu[k])**2
+    tmpfld[k,:,:]=sigu[k] #(1./sigu[k])**2
 
 writefield('sigma_vel.bin',tmpfld.astype(prec))
 
-writefield('weights_diffkr.bin',np.ones((ny,nx),dtype=prec)/1e-10)
-
 # for the cost function penalty terms for the control variables we
 # need store the weighs = 1/uncertainties^2, (i.e. in 1/units^2)
+
+writefield('weights_diffkr.bin',np.ones((nz,ny,nx),dtype=prec)/1e-10)
 
 # errors
 fnames = ['sflux','hflux','tau']
