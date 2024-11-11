@@ -9,47 +9,54 @@ from xmitgcm import open_mdsdataset
 
 import datetime as dt
 
-def readfield(fname,dims,datatype):
-    """Call signatures::
+from eifex_utils import *
 
-    readfield(filename, dims, numpy.datatype)
+refdate = dt.datetime(2001,1,1)
+startdate = dt.datetime(2004,2,8)
 
-    Read unblocked binary data with dimentions "dims".
-    """
+# stations = read_antxxi3('../../CTDall/antxxi3.mat')
+# lons=[]
+# lats=[]
+# dats=[]
+# ik  =[]
+# for k,stat in enumerate(stations):
+#     hr = stat['hours_since_jan01']
+#     if stat['lon'] < 5 and ~np.isnan(hr):
+#         ik.append(k)
+#         dats.append(refdate + dt.timedelta(hours=hr))
+#         lons.append(stat['lon'])
+#         lats.append(stat['lat'])
+# eifex_stations = [stations[k] for k in ik]
 
-    try:
-        fid = open(fname,"rb")
-    except:
-        sys.exit( fname+": no such file or directory")
+# eifex_stations = get_eifex_stations()
+# mydate = []
+# for stat in eifex_stations:
+#     hr = stat['hours_since_jan01']
+#     mydate.append( refdate + dt.timedelta(hours=int(hr)) )
 
-    v   = np.fromfile(fid, datatype)
-    fid.close()
-
-    if sys.byteorder == 'little': v.byteswap(True)
-
-    if   len(v) == np.prod(dims):     v = v.reshape(dims)
-    elif len(v) == np.prod(dims[1:]): v = v.reshape(dims[1:])
-    else:
-        errstr = (  "dimensions do not match: \n len(data) = " + str(len(v))
-                  + ", but prod(dims) = " + str(np.prod(dims)) )
-        raise RuntimeError(errstr)
-
-    return v
-
-refdate = dt.datetime(2004,2,8)
+# tl = read_timeline()
+# mydate = []
+# for hr in tl['hours_since_jan01']:
+#     mydate.append( refdate + dt.timedelta(hours=int(hr)) )
 
 bdir='..'
 runs = ['run00','run_opt']
-names= ['first guess','iteration 125']
 myruns = []
 for r in runs:
     myruns.append(os.path.join(bdir,r))
+
+with open(os.path.join(myruns[-1],'data.optim')) as fn:
+    for line in fn:
+        if 'optimcycle' in line:
+            it=line.split('=')[-1].replace(',\n','')
+
+names= ['first guess','iteration %s'%it]
 
 ds = []
 for myrun in myruns:
     ds.append(
         open_mdsdataset(myrun,prefix = ['diags3D','diags2D','GGL90diags'],
-                        ref_date = refdate)
+                        ref_date = startdate)
     )
 
 # load observations/initial conditions
@@ -59,6 +66,7 @@ t0 = readfield(os.path.join(bdir,'input/theta.init'),
 s0 = readfield(os.path.join(bdir,'input/salt.init'),
                [nz,ny,nx],'float64')
 
+# projection
 proj=ccrs.Mercator()
 kz = 2
 hm = []
@@ -89,7 +97,7 @@ for k, ax in enumerate(axs[1,1:]):
     salt=ds[k].SALT.isel(time=myslice,Z=kz).mean(dim='time')
     hm.append(ax.pcolormesh(ds[k].XG,ds[k].YG,salt, **salt_kwargs))
 
-
+# add nice axes labels
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 lon_formatter = LongitudeFormatter(dms=True,auto_hide=True)
 lat_formatter = LatitudeFormatter(dms=True,auto_hide=True)
