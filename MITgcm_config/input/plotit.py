@@ -9,8 +9,8 @@ import datetime as dt
 refdate = dt.datetime(2004,2,8)
 
 bdir='..'
-runs = ['run00','run84']
-names= ['first guess','iteration 84']
+runs = ['run00','run_opt']
+names= ['first guess','iteration 10']
 myruns = []
 for r in runs:
     myruns.append(os.path.join(bdir,r))
@@ -41,7 +41,7 @@ for k, ax in enumerate(axs[1,:]):
 
 
 plt.colorbar(hm[0],ax=axs[0,:],orientation='vertical',
-             label=r'theta /$ ^\circ$C')
+             label=r'theta / $^\circ$C')
 plt.colorbar(hm[2],ax=axs[1,:],orientation='vertical',
              label='salinity')
 

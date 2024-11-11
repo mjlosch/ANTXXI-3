@@ -94,7 +94,7 @@
 #pChkptFreq  =315360000.0,
 #1 month: 30.4166666 days,
 #chkptFreq   = 86400.0,
- monitorFreq = 3600.0,
+ monitorFreq = 14400.0,
 #monitorFreq = 1.0,
 #dumpFreq = 1.,
  dumpInitAndLast = .FALSE.,
