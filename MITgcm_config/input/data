@@ -82,7 +82,7 @@
 #
  forcing_In_AB=.FALSE.,
  momDissip_In_AB=.FALSE.,
- deltaT    = 600.,
+ deltaT    = 300.,
 #when using ab2:
 # abEps = 0.1,
 #when using ab3:
