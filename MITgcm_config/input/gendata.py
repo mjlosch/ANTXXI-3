@@ -23,6 +23,9 @@ def writefield(fname,data):
 nx,ny,nz = 42,54,30
 
 prec='float64'
+# if we decide to use single precision controls on disk (ctrlPrec=32
+# in data.ctrl), then this needs to be 'float32', too, because this
+# applies also to the weights
 wprec = 'float64'
 
 H = -500.*np.ones((ny,nx))
@@ -98,13 +101,13 @@ print(' delR = ', [dd for dd in dz])
 
 # for the cost function terms with model-data comparisions we need
 # store the uncertainties, (i.e. in units of the corresponding fields)
-# ratio and dummy
-s = '100. -999.\n'
-ascii = s.encode('ascii')
 
 with open('data.err','wb') as f:
-    # dummy header
-    f.write(ascii)
+    # ratio and dummy
+    s = '100. -999.\n'
+    f.write(s.encode('ascii'))
+    # individual errors, weights for obcs will be computed as
+    # ratio/sig[t,s,u]**2 (pkg/ecco/ecco_cost_weights.F)
     for k in range(len(sigt)):
         s = '%f %f %f\n'%(sigt[k],sigs[k],sigu[k])
 # this would reflect the paper with sigt/s scaled by 0.1 (ratio=100)
