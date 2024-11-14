@@ -45,6 +45,26 @@ for file in cf_files:
                     # print("%s.%s"%(cfnam,cmdstr))
                     exec("%s.%s"%(cfnam,cmdstr))
 
+# only keep iteration output (removing simulations that lead to an
+# increase of fc)
+if True:
+    index=[]
+    ff = np.copy(fc)
+    fm = ff[0]
+    for k in range(1,len(ff)):
+        if ff[k]>fm:
+            # record position
+            index.append(k)
+        else:
+            fm=ff[k]
+
+    # now we know when fc did not decrease; drop list entries starting
+    # from the end
+    for ii in index[::-1]:
+        for cfnam in cfnames:
+            # drop list entries
+            exec("del %s[ii]"%cfnam)
+
 fig, ax = plt.subplots(1,1)
 
 itrs = np.arange(len(fc))
