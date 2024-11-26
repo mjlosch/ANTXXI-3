@@ -24,35 +24,35 @@
  uwindfile         = 'uwind.42x54.3hourly',
  vwindfile         = 'vwind.42x54.3hourly',
 #
- precipstartdate1  = 20040124,
+ precipstartdate1  = 20040122,
  precipstartdate2  = 180000,
  precipperiod      = 10800.0,
 #
- apressurestartdate1  = 20040124,
+ apressurestartdate1  = 20040122,
  apressurestartdate2  = 180000,
  apressureperiod      = 10800.0,
 #
- atempstartdate1   = 20040124,
+ atempstartdate1   = 20040122,
  atempstartdate2   = 180000,
  atempperiod       = 10800.0,
 #
- aqhstartdate1     = 20040124,
+ aqhstartdate1     = 20040122,
  aqhstartdate2     = 180000,
  aqhperiod         = 10800.0,
 #
- swdownstartdate1  = 20040124,
+ swdownstartdate1  = 20040122,
  swdownstartdate2  = 180000,
  swdownperiod      = 10800.0,
 #
- lwdownstartdate1  = 20040124,
+ lwdownstartdate1  = 20040122,
  lwdownstartdate2  = 180000,
  lwdownperiod      = 10800.0,
 #
- uwindstartdate1   = 20040124,
+ uwindstartdate1   = 20040122,
  uwindstartdate2   = 180000,
  uwindperiod       = 10800.0,
 #
- vwindstartdate1   = 20040124,
+ vwindstartdate1   = 20040122,
  vwindstartdate2   = 180000,
  vwindperiod       = 10800.0,
  &
@@ -70,27 +70,27 @@
  &
 
  &EXF_NML_OBCS
-  obcsNstartdate1   = 20040124,
+  obcsNstartdate1   = 20040208,
   obcsNstartdate2   = 000000,
   obcsNperiod       = 0.0,
 #
-  obcsWstartdate1   = 20040124,
+  obcsWstartdate1   = 20040208,
   obcsWstartdate2   = 000000,
   obcsWperiod       = 0.0,
 #
-  obcsEstartdate1   = 20040124,
+  obcsEstartdate1   = 20040208,
   obcsEstartdate2   = 000000,
   obcsEperiod       = 0.0,
 #
-  siobEstartdate1   = 20040124,
+  siobEstartdate1   = 20040208,
   siobEstartdate2   = 000000,
   siobEperiod       = 0.0,
 #
-  siobWstartdate1   = 20040124,
+  siobWstartdate1   = 20040208,
   siobWstartdate2   = 000000,
   siobWperiod       = 0.0,
 #
-  siobNstartdate1   = 20040124,
+  siobNstartdate1   = 20040208,
   siobNstartdate2   = 000000,
   siobNperiod       = 0.0,
  &
