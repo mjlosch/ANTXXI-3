@@ -13,6 +13,8 @@ from eifex_utils import *
 
 refdate = dt.datetime(2001,1,1)
 startdate = dt.datetime(2004,2,8)
+delta_t = 300.
+ndays=39
 
 # stations = read_antxxi3('../../CTDall/antxxi3.mat')
 # lons=[]
@@ -56,7 +58,7 @@ ds = []
 for myrun in myruns:
     ds.append(
         open_mdsdataset(myrun,prefix = ['diags3D','diags2D','GGL90diags'],
-                        ref_date = startdate)
+                        delta_t = delta_t, ref_date = startdate)
     )
 
 # load observations/initial conditions
@@ -69,32 +71,31 @@ s0 = readfield(os.path.join(bdir,'input/salt.init'),
 # projection
 proj=ccrs.Mercator()
 kz = 2
-hm = []
+
 myslice = slice(-10,-1)
 #myslice = slice(0,10)
 k=0
-theta_kwargs = {'norm': colors.Normalize(vmin=3.4,vmax=6),
-                'cmap': cmo.thermal, 'transform': ccrs.PlateCarree()}
-
 fig, axs = plt.subplots(2,3,figsize=(11,8),
                         sharex=True,sharey=True,
                         layout='constrained',
                         subplot_kw={'projection': proj})
 
-hm.append(axs[0,0].pcolormesh(ds[k].XG,ds[k].YG,t0[kz,:,:],
-                              **theta_kwargs))
+hm = []
+
+theta_kwargs = {'norm': colors.Normalize(vmin=3.4,vmax=6),
+                'cmap': cmo.thermal, 'transform': ccrs.PlateCarree()}
+hm.append(axs[0,0].pcolormesh(ds[k].XG,ds[k].YG,t0[kz,:,:], **theta_kwargs))
 axs[0,0].set_title('initial conditions')
 for k, ax in enumerate(axs[0,1:]):
-    theta=ds[k].THETA.isel(time=myslice,Z=kz).mean(dim='time')
+    theta = ds[k].THETA.isel(time=myslice,Z=kz).mean(dim='time')
     hm.append(ax.pcolormesh(ds[k].XG,ds[k].YG,theta, **theta_kwargs))
     ax.set_title(names[k])
 
 salt_kwargs = {'norm': colors.Normalize(vmin=33.8,vmax=33.93),
                'cmap': cmo.haline, 'transform': ccrs.PlateCarree()}
-hm.append(axs[1,0].pcolormesh(ds[k].XG,ds[k].YG,s0[kz,:,:],
-                             **salt_kwargs))
+hm.append(axs[1,0].pcolormesh(ds[k].XG,ds[k].YG,s0[kz,:,:], **salt_kwargs))
 for k, ax in enumerate(axs[1,1:]):
-    salt=ds[k].SALT.isel(time=myslice,Z=kz).mean(dim='time')
+    salt = ds[k].SALT.isel(time=myslice,Z=kz).mean(dim='time')
     hm.append(ax.pcolormesh(ds[k].XG,ds[k].YG,salt, **salt_kwargs))
 
 # add nice axes labels
@@ -121,12 +122,18 @@ for ax in axs.ravel():
                       ylocs = [-50,-49],
                       crs=ccrs.PlateCarree()) #linetype = '--')
 
-plt.colorbar(hm[0],ax=axs[0,:],orientation='vertical',
+orient='vertical'
+plt.colorbar(hm[0],ax=axs[0,:],orientation=orient,
              label=r'theta / $^\circ$C',extend='both')
-plt.colorbar(hm[3],ax=axs[1,:],orientation='vertical',
+plt.colorbar(hm[3],ax=axs[1,:],orientation=orient,
              label='salinity',extend='both')
 
-plt.suptitle('time average over last ten days, at Z = %f m'%(
-    ds[0].Z[kz]))
+if myslice.start<0:
+    ststr = "time averages over last days %i to %i, at Z = %5.1f m"%(
+        ndays+myslice.start+1, ndays+myslice.stop+1, ds[0].Z[kz])
+else:
+    ststr = "time averages over days %i to %i, at Z = %5.1f m"%(
+        myslice.start+1, myslice.stop, ds[0].Z[kz])
+plt.suptitle(ststr)
 
 plt.show()
