@@ -1,0 +1,105 @@
+# *********************
+# ECCO control variables
+# *********************
+ &ctrl_nml
+ doSinglePrecTapelev=.TRUE.,
+ ctrlprec = 64,
+#to start from given xx*00.data files
+ doinitxx = .FALSE.,
+ doMainUnpack = .FALSE.,
+#to start from given ecco_ctrl... files
+# doinitxx = .FALSE.,
+#
+ xx_obcsnstartdate1  = 20040208,
+ xx_obcsnstartdate2  = 000000,
+ xx_obcsnperiod      = 86400.,
+ xx_obcsn_file       = 'xx_obcsn',
+#
+ xx_obcssstartdate1  = 20040208,
+ xx_obcssstartdate2  = 000000,
+ xx_obcssperiod      = 86400.,
+ xx_obcss_file       = 'xx_obcss',
+#
+ xx_obcswstartdate1  = 20040208,
+ xx_obcswstartdate2  = 000000,
+ xx_obcswperiod      = 86400.,
+ xx_obcsw_file       = 'xx_obcsw',
+#
+ xx_obcsestartdate1  = 20040208,
+ xx_obcsestartdate2  = 000000,
+ xx_obcseperiod      = 86400.,
+ xx_obcse_file       = 'xx_obcse',
+ /
+#
+# *********************
+# names for ctrl_pack/unpack
+# *********************
+ &ctrl_packnames
+ /
+#
+# *********************
+# names for CTRL_GENARR2D,3D CTRL_GENTIM2D
+# *********************
+ &CTRL_NML_GENARR
+ xx_gentim2d_weight(1)     = 'weights_sflux.bin',
+ xx_gentim2d_file(1)       = 'xx_sflux',
+ xx_gentim2d_startdate1(1) = 20040208,
+ xx_gentim2d_startdate2(1) = 000000,
+ xx_gentim2d_period(1)     = 86400.0,
+#xx_gentim2d_preproc(1,1)  = 'WC01',
+ mult_gentim2d(1) = 1.,
+#
+ xx_gentim2d_weight(2)     = 'weights_hflux.bin',
+ xx_gentim2d_file(2)       = 'xx_hflux',
+ xx_gentim2d_startdate1(2) = 20040208,
+ xx_gentim2d_startdate2(2) = 000000,
+ xx_gentim2d_period(2)     = 86400.0,
+#xx_gentim2d_preproc(1,2)  = 'WC01',
+ mult_gentim2d(2) = 1.,
+#
+ xx_gentim2d_weight(3)     = 'weights_tau.bin',
+ xx_gentim2d_file(3)       = 'xx_tauu',
+ xx_gentim2d_startdate1(3) = 20040208,
+ xx_gentim2d_startdate2(3) = 000000,
+ xx_gentim2d_period(3)     = 86400.0,
+#xx_gentim2d_preproc(1,3)  = 'WC01',
+ mult_gentim2d(3) = 1.,
+#
+ xx_gentim2d_weight(4)     = 'weights_tau.bin',
+ xx_gentim2d_file(4)       = 'xx_tauv',
+ xx_gentim2d_startdate1(4) = 20040208,
+ xx_gentim2d_startdate2(4) = 000000,
+ xx_gentim2d_period(4)     = 86400.0,
+#xx_gentim2d_preproc(1,4)  = 'WC01',
+ mult_gentim2d(4) = 1.,
+#
+ xx_genarr3d_weight(1)     = 'weights_theta.bin',
+ xx_genarr3d_file(1)       = 'xx_theta',
+#xx_genarr3d_preproc(1,1)  = 'WC01',
+ xx_genarr3d_bounds(1:5,1) = -2.0,-1.9,39.,40.,0.,
+ mult_genarr3d(1) = 1.,
+#
+ xx_genarr3d_weight(2)     = 'weights_salt.bin',
+ xx_genarr3d_file(2)       = 'xx_salt',
+#xx_genarr3d_preproc(1,2)  = 'WC01',
+ xx_genarr3d_bounds(1:5,2) = 29.,29.5,40.5,41.,0.,
+ mult_genarr3d(2) = 1.,
+#
+#xx_genarr3d_weight(3)     = 'weights_diffkr.bin',
+#xx_genarr3d_file(3)       = 'xx_diffkr',
+#xx_genarr3d_preproc(1,3)  = 'WC01',
+#xx_genarr3d_bounds(1:5,3) = 1.E-6,2.E-6,4.E-4,5.E-4,0.,
+#mult_genarr3d(3) = 1.,
+#
+#  xx_genarr3d_weight(4)     =  'wt_ones.data',
+#  xx_genarr3d_file(4)       = 'xx_kapgm',
+# #xx_genarr3d_preproc(1,4)  = 'WC01',
+#  xx_genarr3d_bounds(1:5,4) = 1.E2,2.E2,0.9E4,1.E4,0.,
+#  mult_genarr3d(4) = 1.,
+# #
+#  xx_genarr3d_weight(5)     = 'wt_ones.data',
+#  xx_genarr3d_file(5)       = 'xx_kapredi',
+# #xx_genarr3d_preproc(1,5)  = 'WC01',
+#  xx_genarr3d_bounds(1:5,5) = 1.E2,2.E2,0.9E4,1.E4,0.,
+#  mult_genarr3d(5) = 1.,
+ /
