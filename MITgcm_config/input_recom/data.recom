@@ -206,7 +206,7 @@
  &RECOM_PARM01
 # recom_iceFile=' ',
 # recom_pCO2File='pCO2_dum.bin',
- recom_ironFile='dustFe_Albani14_PD_42x54_20040121-20040326_r4_fert.bin',
+ recom_ironFile='dustFe_Albani14_PD_42x54_20040121-20040326_r8_fert.bin',
 # recom_hydroFile='hydrothermal_Fe_source_from_helium_r8.bin',
 #recom_tiny = 2.23D-16,
 #recom_tiny = 1.D-12,
