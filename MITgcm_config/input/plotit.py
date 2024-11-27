@@ -122,9 +122,10 @@ for ax in axs.ravel():
                       ylocs = [-50,-49],
                       crs=ccrs.PlateCarree()) #linetype = '--')
 
-plt.colorbar(hm[0],ax=axs[0,:],orientation='vertical',
+orient='vertical'
+plt.colorbar(hm[0],ax=axs[0,:],orientation=orient,
              label=r'theta / $^\circ$C',extend='both')
-plt.colorbar(hm[3],ax=axs[1,:],orientation='vertical',
+plt.colorbar(hm[3],ax=axs[1,:],orientation=orient,
              label='salinity',extend='both')
 
 if myslice.start<0:
