@@ -9,7 +9,7 @@
  useDiagnostics = .true.,
  usePtracers = .TRUE.,
  useGCHEM = .TRUE.,
-#useMNC = .TRUE.,
+ useMNC = .TRUE.,
 #
  useAUTODIFF   =.TRUE.,
  useECCO       =.TRUE.,
