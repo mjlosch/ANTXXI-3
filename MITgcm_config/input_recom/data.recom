@@ -19,7 +19,7 @@
 # minimum concentration of biogeochemical variables
  tiny = 1.e-8,
 # number of  timesteps per external timestep
- bio_step=24,
+ bio_step=1,
 # ---------------------
 # small phytoplankton
 # ---------------------
