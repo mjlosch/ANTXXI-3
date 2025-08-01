@@ -74,23 +74,16 @@
   obcsNstartdate2   = 000000,
   obcsNperiod       = 0.0,
 #
+  obcsSstartdate2   = 20040208,
+  obcsSstartdate2   = 000000,
+  obcsSperiod       = 0.0,
+#
   obcsWstartdate1   = 20040208,
   obcsWstartdate2   = 000000,
   obcsWperiod       = 0.0,
 #
-  obcsEstartdate1   = 20040208,
+  obcsEstartdate2   = 20040208,
   obcsEstartdate2   = 000000,
   obcsEperiod       = 0.0,
 #
-  siobEstartdate1   = 20040208,
-  siobEstartdate2   = 000000,
-  siobEperiod       = 0.0,
-#
-  siobWstartdate1   = 20040208,
-  siobWstartdate2   = 000000,
-  siobWperiod       = 0.0,
-#
-  siobNstartdate1   = 20040208,
-  siobNstartdate2   = 000000,
-  siobNperiod       = 0.0,
  &
