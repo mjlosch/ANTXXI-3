@@ -70,7 +70,7 @@ s0 = readfield(os.path.join(bdir,'input/salt.init'),
 
 # projection
 proj=ccrs.Mercator()
-kz = 2
+kz = 0
 
 myslice = slice(-10,-1)
 #myslice = slice(0,10)
@@ -81,22 +81,32 @@ fig, axs = plt.subplots(2,3,figsize=(11,8),
                         subplot_kw={'projection': proj})
 
 hm = []
+cs = []
 
 theta_kwargs = {'norm': colors.Normalize(vmin=3.4,vmax=6),
                 'cmap': cmo.thermal, 'transform': ccrs.PlateCarree()}
+ctheta_kwargs = {'colors': 'k', 'linewidths': 0.5, 'levels': np.linspace(3,6,7),
+                 'transform': ccrs.PlateCarree()}
 hm.append(axs[0,0].pcolormesh(ds[k].XG,ds[k].YG,t0[kz,:,:], **theta_kwargs))
+cs.append(axs[0,0].contour(ds[k].XC,ds[k].YC,t0[kz,:,:], **ctheta_kwargs))
 axs[0,0].set_title('initial conditions')
 for k, ax in enumerate(axs[0,1:]):
     theta = ds[k].THETA.isel(time=myslice,Z=kz).mean(dim='time')
     hm.append(ax.pcolormesh(ds[k].XG,ds[k].YG,theta, **theta_kwargs))
+    cs.append(ax.contour(ds[k].XC,ds[k].YC,theta, **ctheta_kwargs))
     ax.set_title(names[k])
 
 salt_kwargs = {'norm': colors.Normalize(vmin=33.8,vmax=33.93),
                'cmap': cmo.haline, 'transform': ccrs.PlateCarree()}
+csalt_kwargs = {'colors': 'k', 'linewidths': 0.5,
+                'levels': np.linspace(33.8,33.93,14),
+                'transform': ccrs.PlateCarree()}
 hm.append(axs[1,0].pcolormesh(ds[k].XG,ds[k].YG,s0[kz,:,:], **salt_kwargs))
+cs.append(axs[1,0].contour(ds[k].XC,ds[k].YC,s0[kz,:,:], **csalt_kwargs))
 for k, ax in enumerate(axs[1,1:]):
     salt = ds[k].SALT.isel(time=myslice,Z=kz).mean(dim='time')
     hm.append(ax.pcolormesh(ds[k].XG,ds[k].YG,salt, **salt_kwargs))
+    cs.append(ax.contour(ds[k].XC,ds[k].YC,salt, **csalt_kwargs))
 
 # add nice axes labels
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
@@ -121,6 +131,10 @@ for ax in axs.ravel():
                       xlocs = [2,3],
                       ylocs = [-50,-49],
                       crs=ccrs.PlateCarree()) #linetype = '--')
+
+# add labels to contour lines
+for mycs in cs:
+    mycs.clabel(fontsize=8)
 
 orient='vertical'
 plt.colorbar(hm[0],ax=axs[0,:],orientation=orient,
