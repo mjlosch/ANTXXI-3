@@ -1,15 +1,12 @@
 import numpy as np
 import sys
-from mat4py import loadmat
+from scipy.io import loadmat
 
 def read_timeline(matfile='../../timeline.mat'):
 
-    data = loadmat(matfile)
-    newdict = {}
-    for key in data['timeline'].keys():
-        newdict[key]=np.asarray(data['timeline'][key][:]).ravel()
+    data = loadmat(matfile,simplify_cells=True)
 
-    return newdict
+    return data['timeline']
 
 def read_antxxi3(matfile='../../CTD/antxxi3.mat'):
 
