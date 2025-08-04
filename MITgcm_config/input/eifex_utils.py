@@ -68,20 +68,26 @@ def create_grid(nx=42,ny=54):
     # east-end longitude of the patch: 42*3.6/(111.321*cos(49.4))+1.35
     # north-end latitude of the patch: 54*3.6/111-50.55
 
-    import xarray as xr
-
     # lonc = [  1.3166,  3.4871]; lonc = (lonc(1):diff(lonc)/(nx-1):lonc(2))';
     # latc = [-50.6027,-48.7902]; latc = (latc(1):diff(latc)/(ny-1):latc(2))';
 
-    lonb = [1.35,3.445]
-    latb = np.array([-50.55, -48.80])
-    xc = np.linspace(lonb[0],latb[0],nx)
-    yc = np.linspace(latb[0],latb[0],ny)
+    # lonb = [1.35,3.445]
+    # latb = np.array([-50.55,-48.80])
+
+    # from Grid5 coordinates:
+    # lon = np.array([1.3168833333333334, 3.4863])
+    # lat = np.array([-50.602516666666666,-48.79633333333334])
+    # this works
+    lonb = np.array([1.33, 3.45])
+    latb = np.array([-50.59,-48.80])
+    #
+    xc = np.linspace(lonb[0],lonb[1],nx)
+    yc = np.linspace(latb[0],latb[1],ny)
 
     lon_dc = np.diff(lonb)[0]/(nx-1)
     lat_dc = np.diff(latb)[0]/(ny-1)
-    xg = np.linspace(lonb[0]-0.5*lon_dc,latb[0]+0.5*lon_dc,nx+1)
-    yg = np.linspace(latb[0]-0.5*lat_dc,latb[0]+0.5*lat_dc,ny+1)
+    xg = np.linspace(lonb[0]-0.5*lon_dc,lonb[1]+0.5*lon_dc,nx+1)
+    yg = np.linspace(latb[0]-0.5*lat_dc,latb[1]+0.5*lat_dc,ny+1)
 
     # data take from Losch et al (2014)
     dz = np.asarray([ 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0,
@@ -90,6 +96,8 @@ def create_grid(nx=42,ny=54):
                       25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0])
     zg = -np.hstack([0,np.cumsum(dz)])
     zc = 0.5*zg[:-1]+0.5*zg[1:]
+
+    import xarray as xr
 
     ds = xr.Dataset(
         data_vars=dict( dz=(["zc"], dz),
