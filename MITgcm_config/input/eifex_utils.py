@@ -58,36 +58,25 @@ def readfield(fname,dims,datatype):
 
 def create_grid(nx=42,ny=54):
     # define grid and return coordinates in an xarray dataset
-    # define grid based on the following information:
-    # coordinates of the south-west corner of the patch: 1d21m,-50d33m
+    # define grid based on the following information from Losch et al (2014):
+    # - coordinates of the south-west corner of the patch:
+    #   (1d21m,-50d33m) ~ (1.35,-50.55)
     # length of one grid: 3.6km
     # lon and lat of the patch center: 2d15m,-49d24m
     # length of one degree longitude at equator: 111.321km
-    # length of one degree latitude: 111.0km
-    # length of circumference at 49.4N: 111.321*cos(49.4)
-    # east-end longitude of the patch: 42*3.6/(111.321*cos(49.4))+1.35
-    # north-end latitude of the patch: 54*3.6/111-50.55
+    # length of one degree latitude:  60 nm = 60*1.852km ~ 111.12 km
+    # length of circumference at 49.4N: 111.12*cos(49.4*pi/180)
+    # east-end longitude of the patch:
+    #        42*3.6/(111.12*cos(49.4*pi/180))+1.35 ~ 3.44
+    # north-end latitude of the patch: 54*3.6/111.12-50.55 ~ -48.80
 
-    # lonc = [  1.3166,  3.4871]; lonc = (lonc(1):diff(lonc)/(nx-1):lonc(2))';
-    # latc = [-50.6027,-48.7902]; latc = (latc(1):diff(latc)/(ny-1):latc(2))';
+    long = [1.35,3.44]
+    latg = [-50.55,-48.80]
 
-    # lonb = [1.35,3.445]
-    # latb = np.array([-50.55,-48.80])
-
-    # from Grid5 coordinates:
-    # lon = np.array([1.3168833333333334, 3.4863])
-    # lat = np.array([-50.602516666666666,-48.79633333333334])
-    # this works
-    lonb = np.array([1.33, 3.45])
-    latb = np.array([-50.59,-48.80])
-    #
-    xc = np.linspace(lonb[0],lonb[1],nx)
-    yc = np.linspace(latb[0],latb[1],ny)
-
-    lon_dc = np.diff(lonb)[0]/(nx-1)
-    lat_dc = np.diff(latb)[0]/(ny-1)
-    xg = np.linspace(lonb[0]-0.5*lon_dc,lonb[1]+0.5*lon_dc,nx+1)
-    yg = np.linspace(latb[0]-0.5*lat_dc,latb[1]+0.5*lat_dc,ny+1)
+    xg = np.linspace(long[0],long[1],nx+1)
+    yg = np.linspace(latg[0],latg[1],ny+1)
+    xc = 0.5*(xg[:-1]+xg[1:])
+    yc = 0.5*(yg[:-1]+yg[1:])
 
     # data take from Losch et al (2014)
     dz = np.asarray([ 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0,
